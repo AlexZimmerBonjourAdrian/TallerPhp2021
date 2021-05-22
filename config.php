@@ -8,4 +8,4 @@ define("DB_NAME", "saga");
 
 // Define URL
 define("ROOT_PATH","/Saga/");
-define("ROOT_URL", "http://localhost/Saga/");
+define("ROOT_URL", "http://localhost/");

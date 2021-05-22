@@ -9,7 +9,7 @@ class Categoria {
   function __construct($IdCat,$NomCat,$IdP) {
     $this->IdCat = $IdCat;
     $this->NomCat = $NomCat;
-    $this->IdP = $IdP
+    $this->IdP = $IdP;
   }
 
 

@@ -31,7 +31,7 @@ function getIdAut() {
 }
 
 function setPassAut($PassAut) {
-    $this->NomAut = $NomAut;
+    $this->PassAut = $PassAut;
 }
 
 function getPassAut() {
