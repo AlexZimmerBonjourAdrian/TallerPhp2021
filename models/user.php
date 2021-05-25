@@ -177,7 +177,47 @@ class UserModel extends Model{
 
 
 
+/*
+public function Subscription()
+{
+  
+    
+	
 
+   
+    
+    if(isset($post['submit']))
+    {
+        if(!isset($_SESSION['is_logged_in'])){
+            header('Location: '.ROOT_URL.'Login');
+        }
+        $id= $_SESSION[session_id()];
+        $this->query('SELECT * FROM USUARIO WHERE id=$_SESSION[session_id()] ');
+        $this->query(':id', $id);
+    $monto = 1; //Esto es para testear
+    $row = $this->single();
+       // $this->query('SELECT * FROM SUBSCRIPCION WHERE ')
+     
+       if(!$row){
+           $row = $this->single();
+           $this->query('INSERT INTO Subscripcion (monto, $id)');
+            $this->bind ('monto', $post['monto']);
+            $this->bind(':idCli', $id);
+           
+            
+            $this->execute();
+
+
+           
+       }
+       
+    }
+    
+        
+    
+  
+}
+*/
 
 
 	public function login(){
@@ -247,4 +287,7 @@ class UserModel extends Model{
 		return;
 	}
 
+
+
+    
 }
