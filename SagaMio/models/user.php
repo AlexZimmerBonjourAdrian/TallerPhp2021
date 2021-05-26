@@ -22,7 +22,7 @@ class UserModel extends Model{
             
             //si es cliente chequea campos requeridos para cliente
             if($_SESSION['es_cliente']){
-                if($post['name'] == '' || $post['apellido'] == '' || empty($_post["sexo"]) || $post['nick'] == '' || $post['password'] == '' || $post['email'] == '' || $post['fechaNac'] == null ){
+                if($post['name'] == '' || $post['apellido'] == '' || empty($_post["sexo"]) || $post['nick'] == '' || $post['password'] == '' || $post['email'] == '' || $post['fechaNac'] == null || $post['suscripcion'] ){
                     Messages::setMsg('Please Fill In All Fields', 'error');
                     return;
                 }
@@ -78,8 +78,8 @@ class UserModel extends Model{
                         "sexo"	=> $row['SexoCli'],
                         "nick"	=> $row['NicknameCli'],
                         "fechaNac"	=> $row['FNCli'],
-                        "imagen"	=> $row['ImgCli']
-                    
+                        "imagen"	=> $row['ImgCli'],
+                        "suscripcion" =>$row['suscripcion']
 
                     );
 
@@ -139,7 +139,7 @@ class UserModel extends Model{
                 $this->bind(':fechaNac', $post['fechaNac']);
                 $this->bind(':imagen', $imgContenido);
                 $this->bind(':biografia', $post['biografia']);
-                
+               // $this->bind(':boolval',$post['Suscripcion']);
                 
                 $this->execute(); 
                 
@@ -162,6 +162,7 @@ class UserModel extends Model{
                 "imagen"	=> $row['ImgAut'],
                 "biografia" => $post['BiografiaAut'],
                 "password"	=> $row['PassAut']
+                //"Suscrito" => $row['Suscrito']
                 );
 
                 header('Location: '.ROOT_URL.'usuarios');
@@ -173,51 +174,89 @@ class UserModel extends Model{
 
 
 
- 
-
-
-
-/*
-public function Subscription()
-{
-  
-    
-	
-
-   
-    
-    if(isset($post['submit']))
+    public function subscription()
     {
-        if(!isset($_SESSION['is_logged_in'])){
-            header('Location: '.ROOT_URL.'Login');
-        }
-        $id= $_SESSION[session_id()];
-        $this->query('SELECT * FROM USUARIO WHERE id=$_SESSION[session_id()] ');
-        $this->query(':id', $id);
-    $monto = 1; //Esto es para testear
-    $row = $this->single();
-       // $this->query('SELECT * FROM SUBSCRIPCION WHERE ')
-     
-       if(!$row){
-           $row = $this->single();
-           $this->query('INSERT INTO Subscripcion (monto, $id)');
-            $this->bind ('monto', $post['monto']);
-            $this->bind(':idCli', $id);
-           
-            
-            $this->execute();
-
-
-           
-       }
-       
-    }
-    
-        
-    
   
-}
+        $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+		if(isset($post['password'])){
+			$password = md5($post['password']);	
+		}
+			
+		
+	
+	//if(isset($post['submit'])){
+      //  if($_SESSION['es_cliente'])
+      //  {
+         //   if($post['name'] == '' || $post['apellido'] == '' || empty($_post["sexo"]) || $post['nick'] == '' || $post['password'] == '' || $post['email'] == '' || $post['fechaNac'] !== null  || $imgContenido == null  || $post['biografia'] == '')
+         //   {
+               // Messenges:setMsg()
+           // }
+            
+             //$this->query('SELECT * FROM cliente where id=$_SESSION[session_id()]');
+            // Messages::setMsg("Entra", 'error');
+             
+            //$id=$_SESSION[session_id()];
+           // $this->query('SELECT * FROM cliente WHERE E=$_SESSION[session_id()]');
+           // $this->bind('id',$id);
+            //$this->bind('bool',$post['boolval']);
+           // $row= $this->single();
+            
+
+            
+       //     if($row)
+       //     {
+       //     Messages::setMsg('El Usuario fue encontrado', 'error');
+         //    }
+             /*
+            else
+            {
+                $this->query('UPDATE cliente SET Suscrito=1 WHERE id=$id');
+                $this->bind(':boolval',$post['boolval']);
+                $this->execute(); 
+            }
+
+            $_SESSION['cliente_data'] = array(
+                "Suscrito"	=> $row['Suscrito']
+            );
+            // Messages::setMsg('Entra y Realiza La consulta', 'error');
+            header('Location: '.ROOT_URL.'usuarios');
+        }
+        else
+        {
+            Messages::setMsg('No Realizo nada', 'error');
+        }
+        
 */
+
+  //  }
+       /* 
+        $post = filter_input_array(INPUT_POST, FILTER_VALIDATE_BOOL);
+		if(isset($post['boolval'])){
+			$Subscrito = $post['boolval'];	
+		}
+        */
+        /*
+        if(!isset($_SESSION['is:_logged_in']))
+        {
+            header('Location: '.ROOT_URL.'Login');
+            Messages::setMsg('Please Fill In All Fields', 'error');
+        }
+        */
+        /*
+        $id = $_SESSION[session_id()];
+        $this->query('SELECT * FROM USUARIO WHERE id=$_SESSION[session_id()');
+        $this->query(':id',$id);
+        $this->query(':boolval',$Subscrito);
+        $row= $this->single();
+*/
+          
+        
+     //   }   
+    }
+
+
+
+
 
 
 	public function login(){
@@ -249,7 +288,8 @@ public function Subscription()
 					"fechaNac"	=> $row['FNAut'],
 					"imagen"	=> $row['ImgAut'],
 					"biografia" => $post['BiografiaAut'],
-					"password"	=> $row['PassAut']
+					"password"	=> $row['PassAut'],
+                    "Suscrito" => $row['Suscrito']
 					);
 				
 				header('Location: '.ROOT_URL.'shares');
@@ -274,7 +314,8 @@ public function Subscription()
 					"sexo"	=> $row['SexoCli'],
 					"nick"	=> $row['NicknameCli'],
 					"fechaNac"	=> $row['FNCli'],
-					"imagen"	=> $row['ImgCli']
+					"imagen"	=> $row['ImgCli'],
+                    "Suscrito" => $row['Suscrito']
 				);
 				
 				header('Location: '.ROOT_URL.'shares');
@@ -287,7 +328,4 @@ public function Subscription()
 		return;
 	}
 
-
-
-    
 }

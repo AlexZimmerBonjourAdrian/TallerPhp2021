@@ -1,6 +1,13 @@
 <?php
 class Users extends Controller{
 
+
+	protected function subscription()
+	{
+		$viewmodel = new UserModel();
+		$this->returnView($viewmodel->subscription(), true);
+	}
+
 	protected function register(){
 		$viewmodel = new UserModel();
 		$this->returnView($viewmodel->register(), true);

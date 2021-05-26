@@ -23,9 +23,8 @@
                     <ul class="nav navbar-nav nav-right">
                         <li class="nav-item"><a class="nav-link active" href="<?php echo ROOT_URL; ?>">Saga</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo ROOT_URL; ?>shares">Recursos</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo ROOT_URL; ?>categoria">Categorias</a></li>
-  -                        <li class="nav-item"><a class="nav-link" href="<?php echo ROOT_URL; ?>subscriptions">Suscribirse</a></li>-->
-                       
+                        <li class="nav-item"><a class="nav-link" href="">Categorias</a></li>
+                        <!--<li class="nav-item"><a class="nav-link" href="<?php echo ROOT_URL; ?>users/subscription">Suscribirse</a></li>-->
                       </ul>
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                   <div class="input-group">
@@ -45,6 +44,7 @@
                     <!-- Si no esta log -->
                     <p class="ml-auto navbar-text actions"><a class="text-black-50 login" href="<?php echo ROOT_URL; ?>users/login">Login</a> 
                     <a class="btn btn-primary btn-sm action-button" role="button" href="<?php echo ROOT_URL; ?>users/register" style="background: #e78200;">Registro</a></p>
+                    <a class="ml-auto navbar-text actions"><a class="text-black-50 login" href="<?php echo ROOT_URL; ?>users/subscription">Subscription</a> </p>
                     <?php endif; ?>
             </div>
             </div>
