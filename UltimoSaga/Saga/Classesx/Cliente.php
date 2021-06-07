@@ -27,6 +27,7 @@ class Cliente {
 
 function getIdCli() {
     return $this->IdCli;
+    
 }
 
 function setPassCli($PassCli) {
