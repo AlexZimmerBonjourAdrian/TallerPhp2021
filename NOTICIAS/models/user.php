@@ -43,7 +43,7 @@ class UserModel extends Model{
 
 		if($post['submit']){
 
-			if($post['name'] == '' || $post['email'] == '' || $post['password'] == ''){
+			if($post['name'] == '' || $post['apellido'] == '' || $post["sexo"] == '' || $post['nick'] == '' || $post['password'] == '' || $post['email'] == '' ){
 				Messages::setMsg('Please Fill In All Fields', 'error');
 				return;
 			}
@@ -62,7 +62,7 @@ class UserModel extends Model{
 			else {
 				
 				// Insert into MySQL
-				$this->query('INSERT INTO cliente (PassCli, NomCli,ApellidoCli, SexoCli,NicknameCli) VALUES(:password, :name, :apellido, :email,:sexo, :nick, fechaNac )');
+				$this->query('INSERT INTO cliente (PassCli, NomCli,ApellidoCli, SexoCli,NicknameCli) VALUES(:password, :name, :apellido, :email,:sexo, :nick )');
 				$this->bind(':password', $password);  // $password hasheado
 				$this->bind(':name', $post['name']);
 				$this->bind(':apellido', $post['apellido']);
@@ -80,19 +80,20 @@ class UserModel extends Model{
 				$row = $this->single();
 				
 				$_SESSION['is_logged_in'] = true;
-				$_SESSION['user_data'] = array(
+				$_SESSION['cliente_data'] = array(
 				"id"	=> $row['idCli'],
 				"password" => $row['PassCli'],
 				"name" => $row['NomCli'],
 				"apellido" => $row['ApellidoCli'],
-				"email" => $row['SexoCli'],
-				"nick" =>$row['NickCli'],
-				
+				"email" => $row['EmalCli'],
+				"sexo" => $row['SexoCli'],
+				"nick" =>$row['NicknameCli'],
+				//"fechaNac" =>$row['FNCLI']
 
 			
 				);
 
-				header('Location: '.ROOT_URL.' ');
+				header('Location: '.ROOT_URL.'home');
 				
 			}
 
@@ -131,6 +132,54 @@ class UserModel extends Model{
 		return;
 	}
 	
+}
+
+*/
+/*
+public function login()
+{
+	$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+	if(isset($post['password']))
+	{
+		$password = md5($post['password']);
+	
+
+	if(isset($post['submit']))
+	{
+		$this->query('SELECT * FROM cliente WHERE EmailCli = :email AND PassCli=:password');
+		$this->bind(':email',$post['email']);
+		$this->bind(':password',$password);
+
+		$row = $this->single();
+
+		if($row)
+		{
+			$_SESSION['is_logged_in'] = true;
+			$_SESSION['cliente_data'] = array(
+				"id" => $row['IdCli'],
+				"name" => $row['NomCli'],
+				"apellido" => $row['ApellidoCli'],
+				"email" => $row['EmailCli'],
+				"sexo" => $row['SexoCli'],
+				"nick" => $row['NicknameCli'],
+				"password" => $row['PassCli']
+			);
+		
+		}
+		header('Location: '.ROOT_URL. 'home')
+
+		/*
+		else if($post['submit'])
+		{
+			
+		}
+		
+
+
+	}
+
+
+}
 }
 */
 }

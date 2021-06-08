@@ -1,27 +1,16 @@
 <?php
 class Users extends Controller{
-	
 	protected function register(){
 		$viewmodel = new UserModel();
 		$this->returnView($viewmodel->register(), true);
 	}
-	
-	/*
 
-	protected function registrarCliente()
-	
-	{
-		$viewmodel = new UserModel();
-		$this->returnView($viewmodel->registrarCliente(),true);
-	}
-	*/
-	/*
+
 	protected function login(){
 		$viewmodel = new UserModel();
 		$this->returnView($viewmodel->login(), true);
 	}
-*/
-/*
+
 	protected function logout(){
 		unset($_SESSION['is_logged_in']);
 		unset($_SESSION['user_data']);
@@ -29,5 +18,4 @@ class Users extends Controller{
 		// Redirect
 		header('Location: '.ROOT_URL);
 	}
-	*/
 }
