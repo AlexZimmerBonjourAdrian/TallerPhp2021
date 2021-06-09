@@ -319,7 +319,7 @@ class UserModel extends Model{
 
 		if(isset($post['submit'])){
 			// Compare Login
-			$this->query('SELECT * FROM autor WHERE EmailAut = :email AND PassAut = :password');
+			$this->query('SELECT * FROM Proveedor WHERE EmailAut = :email AND PassAut = :password');
 			$this->bind(':email', $post['email']);
 			$this->bind(':password', $password);
 			
@@ -327,17 +327,17 @@ class UserModel extends Model{
 
 			if($row){
 				$_SESSION['is_logged_in'] = true;
-				$_SESSION['autor_data'] = array(
-					"id"	=> $row['IdAut'],
-					"name"	=> $row['NomAut'],
-					"apellido"	=> $row['ApellidoAut'],
-					"email"	=> $row['EmailAut'],
-					"sexo"	=> $row['SexoAut'],
-					"nick"	=> $row['NicknameAut'],
-					"fechaNac"	=> $row['FNAut'],
-					"imagen"	=> $row['ImgAut'],
+				$_SESSION['Proveedor_data'] = array(
+					"id"	=> $row['IdProv'],
+					"name"	=> $row['NomProv'],
+					"apellido"	=> $row['ApellidoProv'],
+					"email"	=> $row['EmailProv'],
+					"sexo"	=> $row['SexoProv'],
+					"nick"	=> $row['NicknameProv'],
+					//"fechaNac"	=> $row['FNProv'],
+					//"imagen"	=> $row['ImgProv'],
 					//"biografia" => $post['BiografiaAut'],
-					"password"	=> $row['PassAut']
+					"password"	=> $row['PassProv']
 					);
 				
 				header('Location: '.ROOT_URL.'shares');
