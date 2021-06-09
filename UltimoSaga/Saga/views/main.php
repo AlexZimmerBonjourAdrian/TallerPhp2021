@@ -33,7 +33,8 @@
                       <button class="btn btn-default" type="button">Buscar</button>
                     </span>
                   </div>
-                </div>                    
+                </div>   
+                                 
                     <?php if(isset($_SESSION['is_logged_in'])) : ?>
                     <!-- Si esta log -->
                     
