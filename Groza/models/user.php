@@ -128,7 +128,7 @@ class UserModel extends Model{
 
             //si es cliente chequea campos requeridos para cliente
             if($_SESSION['es_cliente']){
-                if($post['name'] == '' || $post['apellido'] == '' || $post["sexo"] == '' || $post['nick'] == '' || $post['password'] == '' || $post['email'] == '' ||){// $post['fechaNac'] == null ){
+                if($post['name'] == '' || $post['apellido'] == '' || $post["sexo"] == '' || $post['nick'] == '' || $post['password'] == '' || $post['email'] == '' ){// $post['fechaNac'] == null ){
                     Messages::setMsg('Please Fill In All Fields', 'error');
                     return;
                 }
@@ -192,7 +192,7 @@ class UserModel extends Model{
             return;
     }
 
-	public function registerAutor(){
+	public function registerProveedor(){
         // Sanitize POST
 		$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 		if(isset($post['password'])){
@@ -311,6 +311,73 @@ class UserModel extends Model{
 		return;
 	}
 */
+public function login(){
+	// Sanitize POST
+	$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+	if(isset($post['password'])){
+	$password = md5($post['password']);	
+	}
+	
+
+	if(isset($post['submit'])){
+		// Compare Login
+		$this->query('SELECT * FROM Autor WHERE EmailAut = :email AND PassAut = :password');
+		$this->bind(':email', $post['email']);
+		$this->bind(':password', $password);
+		
+		$row = $this->single();
+
+		if($row){
+			$_SESSION['is_logged_in'] = true;
+			$_SESSION['Proveedor_data'] = array(
+				"id"	=> $row['IdProv'],
+				"name"	=> $row['NomProv'],
+				"apellido"	=> $row['ApellidoProv'],
+				"email"	=> $row['EmailProv'],
+				"sexo"	=> $row['SexoProv'],
+				"nick"	=> $row['NicknameProv'],
+				//"fechaNac"	=> $row['FNProv'],
+				//"imagen"	=> $row['ImgProv'],
+				//"biografia" => $post['BiografiaAut'],
+				"password"	=> $row['PassProv']
+				);
+			
+			header('Location: '.ROOT_URL.'shares');
+
+		} 
+	 elseif($post['submit']){
+	
+		$this->query('SELECT * FROM cliente WHERE EmailCli = :email AND PassCli = :password');
+		$this->bind(':email', $post['email']);
+		$this->bind(':password', $password);
+		
+		$row = $this->single();
+
+		if($row){
+			$_SESSION['is_logged_in'] = true;
+			$_SESSION['cliente_data'] = array(
+				"id"	=> $row['IdCli'],
+				"password"	=> $row['PassCli'],
+				"name"	=> $row['NomCli'],
+				"apellido"	=> $row['ApellidoCli'],
+				"email"	=> $row['EmailCli'],
+				"sexo"	=> $row['SexoCli'],
+				"nick"	=> $row['NicknameCli'],
+				"fechaNac"	=> $row['FNCli'],
+				"imagen"	=> $row['ImgCli']
+			);
+			
+			header('Location: '.ROOT_URL.'shares');
+
+		} 
+	}else {
+			Messages::setMsg('Incorrect Login', 'error');
+		}
+	}
+	return;
+}
+
 }
 
 /*
@@ -379,74 +446,10 @@ public function login(){
 	
 }*/
 //Login Completo
-	public function login(){
-		// Sanitize POST
-		$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
-		if(isset($post['password'])){
-		$password = md5($post['password']);	
-		}
-		
 
-		if(isset($post['submit'])){
-			// Compare Login
-			$this->query('SELECT * FROM Proveedor WHERE EmailProv = :email AND PassProv = :password');
-			$this->bind(':email', $post['email']);
-			$this->bind(':password', $password);
-			
-			$row = $this->single();
 
-			if($row){
-				$_SESSION['is_logged_in'] = true;
-				$_SESSION['Proveedor_data'] = array(
-					"id"	=> $row['IdProv'],
-					"name"	=> $row['NomProv'],
-					"apellido"	=> $row['ApellidoProv'],
-					"email"	=> $row['EmailProv'],
-					"sexo"	=> $row['SexoProv'],
-					"nick"	=> $row['NicknameProv'],
-					//"fechaNac"	=> $row['FNProv'],
-					//"imagen"	=> $row['ImgProv'],
-					//"biografia" => $post['BiografiaAut'],
-					"password"	=> $row['PassProv']
-					);
-				
-				header('Location: '.ROOT_URL.'shares');
-
-			} 
-		 elseif($post['submit']){
-		
-			$this->query('SELECT * FROM cliente WHERE EmailCli = :email AND PassCli = :password');
-			$this->bind(':email', $post['email']);
-			$this->bind(':password', $password);
-			
-			$row = $this->single();
-	
-			if($row){
-				$_SESSION['is_logged_in'] = true;
-				$_SESSION['cliente_data'] = array(
-					"id"	=> $row['IdCli'],
-					"password"	=> $row['PassCli'],
-					"name"	=> $row['NomCli'],
-					"apellido"	=> $row['ApellidoCli'],
-					"email"	=> $row['EmailCli'],
-					"sexo"	=> $row['SexoCli'],
-					"nick"	=> $row['NicknameCli'],
-					"fechaNac"	=> $row['FNCli'],
-					"imagen"	=> $row['ImgCli']
-				);
-				
-				header('Location: '.ROOT_URL.'shares');
-	
-			} 
-		}else {
-				Messages::setMsg('Incorrect Login', 'error');
-			}
-		}
-		return;
-	}
-
-}
+//}
 
 
 

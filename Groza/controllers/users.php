@@ -1,10 +1,34 @@
 <?php
 class Users extends Controller{
+
+
+	
+	/*
+	
+	{
+	protected function suscripcion()[
+		$viewmodel = new UserModel();
+	$this->returnView($viewmodel->suscripcion(),true);
+	}
+
+	*/
+	
+
 	protected function register(){
 		$viewmodel = new UserModel();
 		$this->returnView($viewmodel->register(), true);
 	}
 
+	protected function registerProveedor(){
+		$viewmodel = new UserModel();
+		$this->returnView($viewmodel->registerProveedor(),true);
+	}
+	
+	protected function registerCliente()
+	{
+		$viewmodel = new UserModel();
+		$this->returnView($viewmodel->registerCliente(),true);
+	}
 
 	protected function login(){
 		$viewmodel = new UserModel();
@@ -18,4 +42,10 @@ class Users extends Controller{
 		// Redirect
 		header('Location: '.ROOT_URL);
 	}
+
+
+
+
+
+
 }
