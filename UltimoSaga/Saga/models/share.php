@@ -11,8 +11,7 @@ class ShareModel extends Model{
 		// Sanitize POST
 		$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
-
-		if(isset($post['submit'])){ 
+	if(isset($post['submit'])){ 
 
 			$img = file_get_contents($_FILES['Imagen']['tmp_name']);
 			

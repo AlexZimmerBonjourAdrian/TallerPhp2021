@@ -127,7 +127,7 @@ class UserModel extends Model{
             
 
             //si es cliente chequea campos requeridos para cliente
-            if($_SESSION['es_cliente']){
+            //if($_SESSION['es_cliente']){
                 if($post['name'] == '' || $post['apellido'] == '' || $post["sexo"] == '' || $post['nick'] == '' || $post['password'] == '' || $post['email'] == '' ){// $post['fechaNac'] == null ){
                     Messages::setMsg('Please Fill In All Fields', 'error');
                     return;
@@ -187,7 +187,7 @@ class UserModel extends Model{
 
                     header('Location: '.ROOT_URL.'home');
                 }
-            } 
+            //} 
             }
             return;
     }
@@ -202,7 +202,7 @@ class UserModel extends Model{
 			
 	
 		if(isset($post['submit'])){
-        if($_SESSION['es_Proveedor']){
+       // if($_SESSION['es_Proveedor']){
 
            
 
@@ -266,7 +266,7 @@ class UserModel extends Model{
                 header('Location: '.ROOT_URL.'home');
             }
         }
-        }
+       // }
         return;
     }
 

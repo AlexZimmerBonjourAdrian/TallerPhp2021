@@ -25,7 +25,7 @@ class UserModel extends Model{
 
             //si es cliente chequea campos requeridos para cliente
             if($_SESSION['es_cliente']){
-                if($post['name'] == '' || $post['apellido'] == '' || $post["sexo"] == '' || $post['nick'] == '' || $post['password'] == '' || $post['email'] == '' || $post['fechaNac'] == null ){
+                if($post['name'] == '' || $post['apellido'] == '' || $post["sexo"] == '' || $post['nick'] == '' || $post['password'] == '' || $post['email'] == '' ){
                     Messages::setMsg('Please Fill In All Fields', 'error');
                     return;
                 }
@@ -108,7 +108,7 @@ class UserModel extends Model{
 		}
 			
 	
-	if(isset($post['submit'])){
+	    if(isset($post['submit'])){
         if($_SESSION['es_Proveedor']){
 
             // chequea si subió una imagen
@@ -319,7 +319,7 @@ class UserModel extends Model{
 
 		if(isset($post['submit'])){
 			// Compare Login
-			$this->query('SELECT * FROM Proveedor WHERE EmailAut = :email AND PassAut = :password');
+			$this->query('SELECT * FROM Autor WHERE EmailAut = :email AND PassAut = :password');
 			$this->bind(':email', $post['email']);
 			$this->bind(':password', $password);
 			
