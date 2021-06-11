@@ -9,14 +9,14 @@
             <div class="card-body">
               <h5 class="card-title">Proveedor</h5>
     
-              <a href="<?php echo ROOT_URL; ?>users/registerProveedor" class="btn btn-outline-primary">Registrarse</a>
+              <a href="<?php echo ROOT_URL; ?>users/registerProveedor" class="btn btn-outline-primary">Registrar Cliente</a>
             </div>
           </div>
           <div class="col-4">
             <div class="card-body">
               <h5 class="card-title">Cliente</h5>
     
-              <a href="<?php echo ROOT_URL; ?>users/registerCliente" class="btn btn-outline-primary">Registrarse</a>
+              <a href="<?php echo ROOT_URL; ?>users/registerCliente" class="btn btn-outline-primary">Registrar Proveedor</a>
             </div>
           </div>
         </div>

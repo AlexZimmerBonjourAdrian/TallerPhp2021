@@ -114,6 +114,97 @@ class UserModel extends Model{
 	}
 	*/
 	//loginSimple
+
+	public function registerCliente(){
+        
+        
+        // Sanitize POST
+		$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+		if(isset($post['password'])){
+			$password = md5($post['password']);	
+		}
+			
+        
+        if(isset($post['submit'])){
+            
+
+            //si es cliente chequea campos requeridos para cliente
+            if($_SESSION['es_cliente']){
+                if($post['name'] == '' || $post['apellido'] == '' || $post["sexo"] == '' || $post['nick'] == '' || $post['password'] == '' || $post['email'] == '' ){
+                    Messages::setMsg('Please Fill In All Fields', 'error');
+                    return;
+                }
+
+                //chequea que no esté registrado
+                $this->query('SELECT * FROM cliente WHERE EmailCli = :email AND PassCli = :password');
+                $this->bind(':email', $post['email']);
+                $this->bind(':password', $password);
+                $row = $this->single();
+
+                $this->query('SELECT * FROM proveedor WHERE EmailProv = :email AND PassProv = :password');
+                $this->bind(':email', $post['email']);
+                $this->bind(':password', $password);
+                $row2 = $this->single();
+
+                if($row || $row2){
+                    Messages::setMsg('El usuario ya existe', 'error');
+                }
+                
+                else {
+/*
+                    // chequea si subió una imagen
+                    if (count($_FILES) > 0) {
+                        if (is_uploaded_file($_FILES['imagen']['tmp_name'])) {
+                            $imgContenido = file_get_contents($_FILES['imagen']['tmp_name']); // este es el blob
+                        }
+                    }
+                    else{
+                        // no subió ninguna imagen
+                        $imgContenido = null;
+                    } */
+                    
+                    // Insert into MySQL
+                    $this->query('INSERT INTO cliente (PassCli, NomCli, ApellidoCli, EmailCli, SexoCli, NicknameCli, FNCli, ImgCli) VALUES( :password, :name, :apellido, :email, :sexo, :nick, :fechaNac, :imagen)');
+                    $this->bind(':password', $password);  // $password hasheado
+                    $this->bind(':name', $post['name']);
+                    $this->bind(':apellido', $post['apellido']);
+                    $this->bind(':email', $post['email']);
+                    $this->bind(':sexo', $post['sexo']);
+                    $this->bind(':nick', $post['nick']);
+                    //$this->bind(':fechaNac', $post['fechaNac']);
+                    //$this->bind(':imagen', $imgContenido );
+                    
+                    $this->execute(); 
+                    
+                    // se trae al usuario recien creado para setear sus datos en la sesion
+                    $this->query('SELECT * FROM cliente WHERE EmailCli = :email AND PassCli = :password');
+                    $this->bind(':email', $post['email']);
+                    $this->bind(':password', $password);
+
+                    $row = $this->single();
+                
+                    $_SESSION['cliente_data'] = array(
+                        "id"	=> $row['IdCli'],
+                        "password"	=> $row['PassCli'],
+                        "name"	=> $row['NomCli'],
+                        "apellido"	=> $row['ApellidoCli'],
+                        "email"	=> $row['EmailCli'],
+                        "sexo"	=> $row['SexoCli'],
+                        "nick"	=> $row['NicknameCli'],
+                        //"fechaNac"	=> $row['FNCli'],
+                        //"imagen"	=> $row['ImgCli']
+                        
+
+                    );
+
+                    header('Location: '.ROOT_URL.'home');
+                }
+            } 
+            }
+            return;
+    }
+
+	/*
 	public function registerCliente(){
 
         // Sanitize POST
@@ -191,6 +282,7 @@ class UserModel extends Model{
             }
             return;
     }
+	*/
 
 	public function registerProveedor(){
         // Sanitize POST
@@ -202,11 +294,11 @@ class UserModel extends Model{
 			
 	
 		if(isset($post['submit'])){
-       // if($_SESSION['es_Proveedor']){
+        if($_SESSION['es_proveedor']){
 
            
 
-            if($post['name'] == '' || $post['apellido'] == '' || $post["sexo"] == '' || $post['nick'] == '' || $post['password'] == '' || $post['email'] == '' || $post['fechaNac'] == null  || $imgContenido == null  || $post['biografia'] == ''){
+            if($post['name'] == '' || $post['apellido'] == '' || $post["sexo"] == '' || $post['nick'] == '' || $post['password'] == '' || $post['email'] == '' ){
                 Messages::setMsg('Please Fill In All Fields', 'error');
                 return;
             }
@@ -266,7 +358,7 @@ class UserModel extends Model{
                 header('Location: '.ROOT_URL.'home');
             }
         }
-       // }
+        }
         return;
     }
 

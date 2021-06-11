@@ -1,7 +1,7 @@
 <?php
 class ShareModel extends Model{
 	public function index(){
-		$this->query('SELECT * FROM Recursos ORDER BY create_date DESC');
+		$this->query('SELECT * FROM recurso');
 		$rows = $this->resultSet();
 		return $rows;
 	}
@@ -12,21 +12,26 @@ class ShareModel extends Model{
 
 		if(isset($post['submit'])){
 
-			$img=file_get_contents(INPUT_POST,FILTER_SANITIZE_STRING);
-			if($post['Nombre'] == ''||  $post['Descript'] ==''|| $post['Descarg']==''  || $post['Tipo'] ==''|| $post['Descript'] == '' || $post['Enlace']=='' || $post['TipoPlan']==''){
+			//$img=file_get_contents(INPUT_POST,FILTER_SANITIZE_STRING);
+			if($post['Nombre'] == ' '||  $post['Descript'] == ' ' || $post['Tipo'] == ' '|| $post['TipoPlan']== ' ' || $post['Enlace']== ' '){
 				Messages::setMsg('Please Fill In All Fields', 'error');
 				return;
 			}
 
-			$this->query('INSERT INTO recurso (NomRec,Descript,ImgR,Tipo,TipoPlan,Enlace,IdProv) values(:Nombre,:Descript,:Tipo,:TipoPlan,:Enlace,:IdProv)');
+
+			$this->query('INSERT INTO recurso (NomRec,Descript,ImgR,Tipo,TipoPlan,Enlace,IdProv) values(:Nombre,:Descript,:ImgR,:Tipo,:TipoPlan,:Enlace,:IdProv)');
 			$this->bind(':Nombre', $post['Nombre']);
+			$this->bind(':Descript', $post['Descript']);
+			$this->bind(':ImgR',NULL);
 			$this->bind(':Tipo',$post['Tipo']);
 			$this->bind(':TipoPlan',$post['TipoPlan']);
-		//	$this->bind(':ImgR',$img);
-			$this->bind(':Descript', $post['Descript']);
 			$this->bind(':Enlace',$post['Enlace']);
 			$this->bind(':IdProv',$_SESSION['proveedor_data']['id']);
 			$this->execute();
+
+
+
+
 
 			/*
 			// Insert into MySQL

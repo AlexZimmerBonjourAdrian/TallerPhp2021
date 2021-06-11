@@ -2,7 +2,7 @@
 
 
 <?php
-	$_SESSION['es_Cliente'] = true;
+	$_SESSION['es_cliente'] = true;
 	?>
 
 <div class="container p-4 w-50">

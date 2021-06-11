@@ -1,9 +1,5 @@
-<div>
-	
-	<?php if(isset($_SESSION['is_logged_in'])) : ?>
-	<?php if(isset($_SESSION['es_Proveedor'])) ?>
+<div>	
 	<a class="btn btn-success btn-share" href="<?php echo ROOT_PATH; ?>shares/add">Share Something</a>
-	<?php endif; ?>
 	<?php foreach($viewmodel as $item) : ?>
 		<div class="well mt-5">
 			<h3><?php echo $item['NomRec']; ?></h3>
