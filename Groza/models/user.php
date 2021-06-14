@@ -164,7 +164,7 @@ class UserModel extends Model{
                     } */
                     
                     // Insert into MySQL
-                    $this->query('INSERT INTO cliente (PassCli, NomCli, ApellidoCli, EmailCli, SexoCli, NicknameCli, FNCli, ImgCli) VALUES( :password, :name, :apellido, :email, :sexo, :nick, :fechaNac, :imagen)');
+                    $this->query('INSERT INTO cliente (PassCli, NomCli, ApellidoCli, EmailCli, SexoCli, NicknameCli) VALUES( :password, :name, :apellido, :email, :sexo, :nick)');
                     $this->bind(':password', $password);  // $password hasheado
                     $this->bind(':name', $post['name']);
                     $this->bind(':apellido', $post['apellido']);
@@ -303,12 +303,12 @@ class UserModel extends Model{
                 return;
             }
             //chequea que no esté registrado
-            $this->query('SELECT * FROM Proveedor WHERE EmailProv = :email AND PassProv = :password');
+            $this->query('SELECT * FROM proveedor WHERE EmailProv = :email AND PassProv = :password');
             $this->bind(':email', $post['email']);
             $this->bind(':password', $password);
             $row = $this->single();
 
-            $this->query('SELECT * FROM Proveedor WHERE EmailProv = :email AND PassProv = :password');
+            $this->query('SELECT * FROM cliente WHERE EmailCli = :email AND PassCli = :password');
             $this->bind(':email', $post['email']);
             $this->bind(':password', $password);
             $row2 = $this->single();
@@ -320,7 +320,7 @@ class UserModel extends Model{
             else {
                 
                 // Insert into MySQL
-                $this->query('INSERT INTO Proveedor (PassProv, NomProv, ApellidoProv, EmailProv, SexoProv, NicknameProv ) VALUES(:password, :name, :apellido, :email, :sexo, :nick)');
+                $this->query('INSERT INTO proveedor (PassProv, NomProv, ApellidoProv, EmailProv, SexoProv, NicknameProv ) VALUES(:password, :name, :apellido, :email, :sexo, :nick)');
                 $this->bind(':password', $password);  // $password hasheado
                 $this->bind(':name', $post['name']);
                 $this->bind(':apellido', $post['apellido']);
@@ -335,14 +335,14 @@ class UserModel extends Model{
                 $this->execute(); 
                 
                 // se trae al usuario recien creado para setear sus datos en la sesion
-                $this->query('SELECT * FROM Proveedor WHERE EmailProv = :email AND PassProv = :password');
+                $this->query('SELECT * FROM proveedor WHERE EmailProv = :email AND PassProv = :password');
                 $this->bind(':email', $post['email']);
                 $this->bind(':password', $password);
 
                 $row = $this->single();
 
                 // setea los datos del usuario traidos de la bd a una variable de sesion
-                $_SESSION['autor_data'] = array(
+                $_SESSION['proveedor_data'] = array(
                 "id"	=> $row['IdProv'],
                 "name"	=> $row['NomProv'],
                 "apellido"	=> $row['ApellidoProv'],
@@ -414,7 +414,7 @@ public function login(){
 
 	if(isset($post['submit'])){
 		// Compare Login
-		$this->query('SELECT * FROM Autor WHERE EmailAut = :email AND PassAut = :password');
+		$this->query('SELECT * FROM proveedor WHERE EmailProv = :email AND PassProv = :password');
 		$this->bind(':email', $post['email']);
 		$this->bind(':password', $password);
 		
@@ -422,7 +422,7 @@ public function login(){
 
 		if($row){
 			$_SESSION['is_logged_in'] = true;
-			$_SESSION['Proveedor_data'] = array(
+			$_SESSION['proveedor_data'] = array(
 				"id"	=> $row['IdProv'],
 				"name"	=> $row['NomProv'],
 				"apellido"	=> $row['ApellidoProv'],

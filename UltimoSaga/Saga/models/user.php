@@ -319,7 +319,7 @@ class UserModel extends Model{
 
 		if(isset($post['submit'])){
 			// Compare Login
-			$this->query('SELECT * FROM Autor WHERE EmailAut = :email AND PassAut = :password');
+			$this->query('SELECT * FROM proveedor WHERE EmailProv = :email AND PassProv = :password');
 			$this->bind(':email', $post['email']);
 			$this->bind(':password', $password);
 			
@@ -361,8 +361,8 @@ class UserModel extends Model{
 					"email"	=> $row['EmailCli'],
 					"sexo"	=> $row['SexoCli'],
 					"nick"	=> $row['NicknameCli'],
-					"fechaNac"	=> $row['FNCli'],
-					"imagen"	=> $row['ImgCli']
+					//"fechaNac"	=> $row['FNCli'],
+					//"imagen"	=> $row['ImgCli']
 				);
 				
 				header('Location: '.ROOT_URL.'shares');
