@@ -1,11 +1,9 @@
 
 <div>
-	
 	<?php foreach($viewmodel as $item) : ?>
 		<div class="well mt-5">
 			<h3><?php echo $item['NomRec']; ?></h3>
-			<?php echo '<img src="data:image/jpeg;base64,'.base64_encode($item['ImgR']).'"/>'; ?><br />
-			<small><?php echo $item['Tipo']; ?></small>
+			<small><?php echo $item['tipo']; ?></small>
 			<hr />
 			<p><?php echo $item['Descrip']; ?></p>
 			<br />
