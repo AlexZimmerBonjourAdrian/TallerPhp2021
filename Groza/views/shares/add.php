@@ -1,4 +1,37 @@
 
+		<script>
+		
+			function previewFile(input){
+				var file = file.file_get_contents;
+		
+				//if(file){
+					var reader = new FileReader();
+		
+					reader.onload = function(){
+						$("previewImg").attr("src ", reader.result);
+					}
+		
+					reader.readAsDataURL(file);
+				//}
+			}
+			
+			
+			function previewFile(input){
+				
+				var file = $("input[type=file]").get(0).files[0];
+		
+			
+					var reader = new FileReader();
+		
+					reader.onload = function(){
+						$("previewImg").attr("src=", reader.result);
+					}
+		
+					reader.readAsDataURL(file);
+				
+			}
+			
+		</script>
 
 
 
@@ -75,6 +108,18 @@
 		<input type="text" name="Enlace" class="form-control"> 
 </div>
 
+<div class="form-group">
+
+		<label>Imagen</label>
+		<p>
+		<p><img id="previewImg" src=" "  style="width: 100px; height : 100px"/><p>
+		<input type="file" accept=".gif,.jpg,.jpeg,.png" type="file" name="file-input" class="form-control" onchange="previewFile(this);" />
+		</p>
+		
+    	
+		</div>
+		
+</div>
  <input class="btn btn-primary" name="submit" type="submit" value="Submit" />
  <a class="btn btn-danger" href="<?php echo ROOT_PATH; ?>shares">Cancel</a>
 </form>

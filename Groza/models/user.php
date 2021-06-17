@@ -41,6 +41,7 @@ class UserModel extends Model{
 		if(isset($post['password'])){
 			$password = md5($post['password']);	
 		}
+		
     }    
 //Register Client Simple
 
@@ -115,6 +116,102 @@ class UserModel extends Model{
 	*/
 	//loginSimple
 
+	public function cancelarSuscripcion()
+	{
+		/*
+		$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+		if(isset($post['password'])){
+			$password = md5($post['password']);	
+		}*/
+
+		$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+	if(isset($post['password'])){
+	$password = md5($post['password']);	
+	}
+	
+	//if($post['submit']){
+		//header('Location: '.ROOT_URL.'home');
+		//Messages::setMsg("El usuario existe y esta listo para usarse",'error');
+        //if($_SESSION['es_cliente']){
+			
+			$this->query('SELECT * FROM cliente where EmailCli=:email');
+			$this->bind(':email',$_SESSION['cliente_data']['email']);
+			$row= $this->single();
+		
+
+			if($row)
+			{
+
+				//Messages::setMsg("El usuario existe y esta listo para usarse",'error');
+				$this->query('DELETE FROM suscripcion WHERE IdCli=:idcli');
+				//$this->bind('precio','19.99');
+				//$this->bind('id');
+				$this->bind(':idcli',$_SESSION['suscripcion_data']['idcli']);
+				/*
+				$this->query('INSERT INTO proveedor (PassProv, NomProv, ApellidoProv, EmailProv, SexoProv, NicknameProv ) VALUES(:password, :name, :apellido, :email, :sexo, :nick)');
+                $this->bind(':password', $password);  // $password hasheado
+                $this->bind(':name', $post['name']);
+                $this->bind(':apellido', $post['apellido']);
+                $this->bind(':email', $post['email']);
+                $this->bind(':sexo', $post['sexo']);
+                $this->bind(':nick', $post['nick']);
+				*/
+				$this->execute(); 
+				
+				
+				$this->query('SELECT * FROM suscripcion WHERE IdCli = :idcli');
+				$this->bind(':idcli',$_SESSION['suscripcion_data']['idcli']);
+
+                    $row = $this->single();
+				
+				if(!$row)
+				{
+				$_SESSION['suscripcion_data'] = array(
+					"id" => $row['idSuscript'],
+					"precio" => $row['precio'],
+					"idcli" => $row['IdCli']
+					/*
+					"id"	=> $row['IdProv'],
+					"name"	=> $row['NomProv'],
+					"apellido"	=> $row['ApellidoProv'],
+					"email"	=> $row['EmailProv'],
+					"sexo"	=> $row['SexoProv'],
+					"nick"	=> $row['NicknameProv'],
+					*/
+					//"fechaNac"	=> $row['FNProv'],
+				   // "imagen"	=> $row['ImgProv'],
+					//"biografia" => $post['BiografiaAut'],
+					//"password"	=> $row['PassProv']
+					
+				);
+				}
+				
+					
+				//header('Location: '.ROOT_URL.'home');	
+			
+					
+			}
+			
+		//}
+		return;
+	//}
+	
+
+
+	}
+
+	public function subir()
+	{
+		$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+		if(isset($post['password'])){
+			$password = md5($post['password']);	
+		}
+	}
+	
+	
+
+	
 	public function registerCliente(){
         
         
@@ -204,6 +301,9 @@ class UserModel extends Model{
             return;
     }
 
+
+
+
 	/*
 	public function registerCliente(){
 
@@ -284,8 +384,120 @@ class UserModel extends Model{
     }
 	*/
 
+	public function free()
+	{
+		$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+	if(isset($post['password'])){
+	$password = md5($post['password']);	
+	}
+
+	}
+
+	public function silver()
+	{
+		
+	$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+/*
+	if(isset($post['password'])){
+	$password = md5($post['password']);	
+	}
+	*/
+	//if($post['submit']){
+		//header('Location: '.ROOT_URL.'home');
+		//Messages::setMsg("El usuario existe y esta listo para usarse",'error');
+        if($_SESSION['es_cliente']){
+			
+			$this->query('SELECT * FROM cliente where EmailCli=:email');
+			$this->bind(':email',$_SESSION['cliente_data']['email']);
+			$row= $this->single();
+		
+
+			if($row)
+			{
+
+				//Messages::setMsg("El usuario existe y esta listo para usarse",'error');
+				$this->query('INSERT INTO suscripcion (precio,IdCli) VALUES(:precio,:idcli)');
+				$this->bind('precio','19.99');
+				$this->bind(':idcli',$_SESSION['cliente_data']['id']);
+				/*
+				$this->query('INSERT INTO proveedor (PassProv, NomProv, ApellidoProv, EmailProv, SexoProv, NicknameProv ) VALUES(:password, :name, :apellido, :email, :sexo, :nick)');
+                $this->bind(':password', $password);  // $password hasheado
+                $this->bind(':name', $post['name']);
+                $this->bind(':apellido', $post['apellido']);
+                $this->bind(':email', $post['email']);
+                $this->bind(':sexo', $post['sexo']);
+                $this->bind(':nick', $post['nick']);
+				*/
+				$this->execute(); 
+				
+				$this->query('SELECT * FROM suscripcion WHERE IdCli = :idcli');
+				$this->bind(':idcli',$_SESSION['cliente_data']['id']);
+
+                    $row = $this->single();
+					
+
+				$_SESSION['suscripcion_data'] = array(
+					"id" => $row['idSuscript'],
+					"precio" => $row['precio'],
+					"idcli" => $row['IdCli']
+					/*
+					"id"	=> $row['IdProv'],
+					"name"	=> $row['NomProv'],
+					"apellido"	=> $row['ApellidoProv'],
+					"email"	=> $row['EmailProv'],
+					"sexo"	=> $row['SexoProv'],
+					"nick"	=> $row['NicknameProv'],
+					*/
+					//"fechaNac"	=> $row['FNProv'],
+				   // "imagen"	=> $row['ImgProv'],
+					//"biografia" => $post['BiografiaAut'],
+					//"password"	=> $row['PassProv']
+					
+				);
+				
+					
+				//header('Location: '.ROOT_URL.'home');	
+				
+					
+			}
+			
+		}
+		return;
+	//}
+	
+}
+
+	public function gold()
+	{
+$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+	if(isset($post['password'])){
+	$password = md5($post['password']);	
+	}
+
+	}
+
+	public function suscripcion()
+	{
+		$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+		if(isset($post['password'])){
+			$password = md5($post['password']);	
+		}
+	
+	}
+	
+  public function ExampleUpdateFile()
+  {
+	$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+	if(isset($post['password'])){
+		$password = md5($post['password']);	
+	}
+  }
 	public function registerProveedor(){
         // Sanitize POST
+
+		
 		$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 		if(isset($post['password'])){
 
@@ -318,7 +530,16 @@ class UserModel extends Model{
                 
             }
             else {
-                
+                if (count($_FILES) > 0) {
+					if (is_uploaded_file($_FILES['imagen']['tmp_name'])) {
+						$imgContenido = file_get_contents($_FILES['imagen']['tmp_name']); // este es el blob
+					}
+				}
+				else{
+					// no subió ninguna imagen
+					$imgContenido = null;
+				} 
+
                 // Insert into MySQL
                 $this->query('INSERT INTO proveedor (PassProv, NomProv, ApellidoProv, EmailProv, SexoProv, NicknameProv ) VALUES(:password, :name, :apellido, :email, :sexo, :nick)');
                 $this->bind(':password', $password);  // $password hasheado
@@ -403,6 +624,9 @@ class UserModel extends Model{
 		return;
 	}
 */
+
+
+
 public function login(){
 	// Sanitize POST
 	$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);

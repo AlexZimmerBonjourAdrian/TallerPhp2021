@@ -20,13 +20,20 @@
           <ul class="nav navbar-nav">
             <li><a href="<?php echo ROOT_URL; ?>">Home</a></li>
             <li><a href="<?php echo ROOT_URL; ?>shares">Recursos</a></li>
-          
+            <li><a href="<?php echo ROOT_URL; ?>users/suscripcion">suscripcion</a></li>
+            <li><a href="<?php echo ROOT_URL; ?>users/exampleUpdateFile">ExampleUpdateFile</a></li>
           </ul>
-
+          <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+       
           <ul class="nav navbar-nav navbar-right">
-            <?php if(isset($_SESSION['is_logged_in'])) : ?>
-            <li><a href="<?php echo ROOT_URL; ?>">Welcome <?php echo $_SESSION['cliente_data']['name']; ?></a></li>
-            <li><a href="<?php echo ROOT_URL; ?>users/logout">Logout</a></li>
+          <?php if(isset($_SESSION['is_logged_in'])) : ?>
+             <?php if(isset($_SESSION['es_cliente'])):?>
+             <li><a href="<?php echo ROOT_URL; ?>">Welcome <?php echo $_SESSION['cliente_data']['name']; ?></a></li>
+              
+              <?php elseif(isset($_SESSION['es_proveedor'])):?>
+              <li><a href="<?php echo ROOT_URL; ?>">Welcome <?php echo $_SESSION['proveedor_data']['name']; ?></a></li>
+              <?php endif;?>
+              <li><a href="<?php echo ROOT_URL; ?>users/logout">Logout</a></li>
           <?php else : ?>
             <li><a href="<?php echo ROOT_URL; ?>users/login">Login</a></li>
             <li><a href="<?php echo ROOT_URL; ?>users/register">Register</a></li>

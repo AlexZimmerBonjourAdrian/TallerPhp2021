@@ -6,6 +6,114 @@ class ShareModel extends Model{
 		return $rows;
 	}
 
+
+	public function buscar(){
+
+	$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+	
+	/*if($post['submit']){
+	{
+
+		if($post['nombre'] == ''){
+			Messages::setMsg('Please Fill In All Fields', 'error');
+			return;
+			
+		}
+		else{
+		
+		$this->query('SELECT * FROM recurso WHILE :nombre = nombre');
+		$this->bind(':nombre',$post['nombre']);
+		$row = $this->single();
+		
+
+		*/
+		
+			if($post['nombre'] == '')
+			{
+			
+				Messages::setMsg("se deve ingresar un nombre","error");
+
+			}
+			
+			else{
+			echo $post['nombre'];
+			
+		 	$this->query('SELECT * FROM recurso WHERE NomRec = :nombre');
+		 	$this->bind(':nombre',$post['nombre']);
+			
+			 $row= $this->single();
+
+			 
+			 /*
+			 $this->query('SELECT * FROM recurso WHERE NomRec = :nombre');
+			 $this->bind(':nombre',$post['nombre']);
+			 $row= $this->single();
+*/
+
+			 //$_SESSION['is_logged_in'] = true;
+			 /*
+			 $_SESSION['is_logged_in'] = true;
+			 $_SESSION['recurso_data'] = array(
+				 "id" => $row['IdRec'],
+				 "name" =>$row['NomRec'],
+				 "descript" => $row['Descript'],
+				 "tipo" => $row['Tipo'], 
+				 "tipoPlan" => $row['TipoPlan'],
+			 //	"ImgR" => $row['ImgR'],
+				 "enlace" =>$row['Enlace'],
+				 "idProv" => $row['IdProv']
+			 );
+			 */
+			}
+
+			 return;
+
+			 }
+			 
+			// else{
+			// 	Messages::setMsg('El Recurso no se a encontrado','error');
+			//  }
+/*
+			 if($row)
+			 {
+				$this->query('SELECT * FROM recurso WHERE NomRec = :nombre');
+				$this->bind(':nombre',$post['nombre']);
+			   
+				$row= $this->single();
+				//$_SESSION['is_logged_in'] = true;
+				$_SESSION['recurso_data'] = array(
+					"id" => $row['IdRec'],
+					"name" =>$row['NomRec'],
+					"descript" => $row['Descript'],
+					"tipo" => $row['Tipo'], 
+					"tipoPlan" => $row['TipoPlan'],
+				//	"ImgR" => $row['ImgR'],
+					"enlace" =>$row['Enlace'],
+					"idProv" => $row['IdProv']
+				);
+
+					//header('Location: '.ROOT_URL.'shares');
+				
+			 }
+			 else{
+				Messages::setMsg('El Recurso no se a encontrado','error');
+			 }
+ */
+		
+	
+			
+		//}
+		// return;
+		
+		
+	
+		
+
+
+	
+	
+	
+
 	public function add(){
 		// Sanitize POST
 		$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
@@ -18,23 +126,47 @@ class ShareModel extends Model{
 				return;
 			}
 			*/
+			if (count($_FILES) > 0) {
+				if (is_uploaded_file($_FILES['imagen']['tmp_name'])) {
+					$imgContenido = file_get_contents($_FILES['imagen']['tmp_name']); // este es el blob
+				}
+			}
+			else{
+				// no subió ninguna imagen
+				$imgContenido = null;
+			} 
 
 
-			$this->query('INSERT INTO recurso (NomRec,Descript,Tipo,TipoPlan,Enlace,IdProv) values(:Nombre,:Descrip,:Tipo,:TipoPlan,:Enlace,:IdProv)');
-			$this->bind(':Nombre', $post['NomRec']);
-			$this->bind(':Descrip', $post['Descript']);
-			//$this->bind(':ImgR',NULL);
-			$this->bind(':Tipo',$post['Tipo']);
-			$this->bind(':TipoPlan',$post['TipoPlan']);
-			$this->bind(':Enlace',$post['Enlace']);
-			$this->bind(':IdProv',$_SESSION['proveedor_data']['id']);
+			$this->query('INSERT INTO recurso (NomRec,Descript,Tipo,TipoPlan,ImgR,Enlace,IdProv) values(:nombre,:descrip,:tipo,:tipoPlan,imgR,:enlace,:idProv)');
+			$this->bind(':nombre', $post['NomRec']);
+			$this->bind(':descrip', $post['Descript']);
+			$this->bind(':imgR',NULL);
+			$this->bind(':tipo',$post['Tipo']);
+			$this->bind(':tipoPlan',$post['TipoPlan']);
+			$this->bind(':enlace',$post['Enlace']);
+			$this->bind(':idProv',$_SESSION['proveedor_data']['id']);
 			
 			$this->execute();
 
+			$this->query('SELECT * FROM recurso WHERE NomRec = :nombre');
+			$this->bind(':nombre',$post['nombre']);
+			
+			$row = $this->single();
 
-
-
-
+			$_SESSION['is_logged_in'] = true;
+			$_SESSION['recurso_data'] = array(
+				"id" => $row['IdRec'],
+				"name" =>$row['NomRec'],
+				"descript" => $row['Descript'],
+				"tipo" => $row['Tipo'], 
+				"tipoPlan" => $row['TipoPlan'],
+			//	"ImgR" => $row['ImgR'],
+				"enlace" =>$row['Enlace'],
+				"idProv" => $row['IdProv']
+			);
+						
+			
+			header('Location: '.ROOT_URL.'home');
 			/*
 			// Insert into MySQL
 			$this->query('INSERT INTO shares (title, body, link, user_id) VALUES(:title, :body, :link, :user_id)');
@@ -51,6 +183,7 @@ class ShareModel extends Model{
 			}*/
 			//header('Location: '.ROOT_URL.'home');
 		}
+		
 		return;
 	}
 }

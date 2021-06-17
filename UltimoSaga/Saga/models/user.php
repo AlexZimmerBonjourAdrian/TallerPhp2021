@@ -29,6 +29,7 @@ class UserModel extends Model{
                     Messages::setMsg('Please Fill In All Fields', 'error');
                     return;
                 }
+                
 
                 //chequea que no esté registrado
                 $this->query('SELECT * FROM cliente WHERE EmailCli = :email AND PassCli = :password');
