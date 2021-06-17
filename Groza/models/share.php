@@ -26,8 +26,13 @@ class ShareModel extends Model{
 		$row = $this->single();
 		
 
-		*/
-		
+		*/ if((isset($_SESSION['cliente_data']['id']) === isset($_SESSION['suscripcion_data']['idcli']))===false) 
+			{
+				
+				header('Location: '.ROOT_URL.'users/suscripcion');
+
+			}
+			else{
 			if($post['nombre'] == '')
 			{
 			
@@ -42,8 +47,8 @@ class ShareModel extends Model{
 		 	$this->bind(':nombre',$post['nombre']);
 			
 			 $row= $this->single();
+			
 
-			 
 			 /*
 			 $this->query('SELECT * FROM recurso WHERE NomRec = :nombre');
 			 $this->bind(':nombre',$post['nombre']);
@@ -51,10 +56,10 @@ class ShareModel extends Model{
 */
 
 			 //$_SESSION['is_logged_in'] = true;
-			 /*
+			 if($row)
+			 {
 			 $_SESSION['is_logged_in'] = true;
 			 $_SESSION['recurso_data'] = array(
-				 "id" => $row['IdRec'],
 				 "name" =>$row['NomRec'],
 				 "descript" => $row['Descript'],
 				 "tipo" => $row['Tipo'], 
@@ -63,10 +68,12 @@ class ShareModel extends Model{
 				 "enlace" =>$row['Enlace'],
 				 "idProv" => $row['IdProv']
 			 );
-			 */
 			}
-
-			 return;
+			
+			}
+			return;
+			
+			 
 
 			 }
 			 
@@ -110,7 +117,7 @@ class ShareModel extends Model{
 		
 
 
-	
+	}
 	
 	
 
