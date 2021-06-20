@@ -239,6 +239,7 @@ class UserModel extends Model{
 
             //si es cliente chequea campos requeridos para cliente
             if($_SESSION['es_cliente']){
+				
                 if($post['name'] == '' || $post['apellido'] == '' || $post["sexo"] == '' || $post['nick'] == '' || $post['password'] == '' || $post['email'] == '' ){
                     Messages::setMsg('Please Fill In All Fields', 'error');
                     return;
@@ -275,13 +276,13 @@ class UserModel extends Model{
 					if (count($_FILES) > 0) {
                         if (is_uploaded_file($_FILES['imagen']['tmp_name'])) {
                             //print_r("Entra en el chequeo de la imagen");
-							$imgContenido = file_get_contents($_FILES['imagen']['tmp_name']); // este es el blob
+							$imgContenido = (file_get_contents($_FILES['imagen']['tmp_name'])); // este es el blob
 							
 						}
                     }
                     else{
                         // no subió ninguna imagen
-						
+						print_r("No Entra");
                         $imgContenido = null;
                     }
                     
@@ -675,6 +676,8 @@ $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
                 Messages::setMsg('Please Fill In All Fields', 'error');
                 return;
             }
+
+			
             //chequea que no esté registrado
             $this->query('SELECT * FROM proveedor WHERE EmailProv = :email AND PassProv = :password');
             $this->bind(':email', $post['email']);
@@ -702,7 +705,7 @@ $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 				} 
 
                 // Insert into MySQL
-                $this->query('INSERT INTO proveedor (PassProv, NomProv, ApellidoProv, EmailProv, SexoProv, NicknameProv,NameEmpresa) VALUES(:password, :name, :apellido, :email, :sexo, :nick, :fechaNac,:imagen,:empresa)');
+                $this->query('INSERT INTO proveedor (PassProv, NomProv, ApellidoProv, EmailProv, ImgProv,FNProv, NomEmpresa,NicknameProv,SexoProv) VALUES(:password,:name,:apellido,:email,:imagen,:fechaNac,:empresa,:sexo,:nick)');
                 $this->bind(':password', $password);  // $password hasheado
                 $this->bind(':name', $post['name']);
                 $this->bind(':apellido', $post['apellido']);
@@ -711,7 +714,7 @@ $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
                 $this->bind(':nick', $post['nick']);
                 $this->bind(':fechaNac', $post['fechaNac']);
                 $this->bind(':imagen', $imgContenido);
-				$this->bind(':empresa',$post['NameEmpresa']);
+				$this->bind(':empresa',$post['empresa']);
                // $this->bind(':biografia', $post['biografia']);
                 
                 

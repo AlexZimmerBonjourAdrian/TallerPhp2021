@@ -1,18 +1,20 @@
 
 	<script>
-			function previewFile(input){
-				var file = $("input[type=file]").get(0).files[0];
-		
-				if(file){
-					var reader = new FileReader();
-		
-					reader.onload = function(){
-						$("#previewImg").attr("src", reader.result);
-					}
-		
-					reader.readAsDataURL(file);
-				}
-			}
+			function previewFile() {
+ 	 var preview = document.querySelector('img');
+ 	 var file    = document.querySelector('input[type=file]').files[0];
+ 	 var reader  = new FileReader();
+
+ 	 reader.onloadend = function () {
+  	  preview.src = reader.result;
+  	}
+
+  	if (file) {
+   	 reader.readAsDataURL(file);
+  	} else {
+   	 preview.src = "";
+		}
+	}
 	</script>
 
 <?php
@@ -55,7 +57,14 @@ $_SESSION['es_proveedor'] = true;
 								</div>
 								
 							</div>
-
+							
+							<div class="row">
+								<div class="form-group mt-2">
+									<input type="text" name="empresa" class="form-control" required
+										placeholder="nombre empresa" />
+								</div>
+								
+							</div>
 							<div class="col-8">
 								<div class="form-group mt-2">
 											<input type="date" name="fechaNac" class="form-control" required
@@ -63,10 +72,10 @@ $_SESSION['es_proveedor'] = true;
 										</div>
 									</div>
 									
-								<div class="form-group mt-2">
-									<input type="file" name="imagen" class="form-control" onchange="previewFile(this);"/>
-									</p><img id="previewImg" src=" " alt="Imagen usuario" height="100px"><p>
-								</div>	
+									<div class="form-group mt-2">
+									<input type="file" name="imagen" class="form-control" onchange="previewFile();" >
+									<img src="" height="200" alt="Image preview...">
+								</div>		
 							<div class="row">
 								<div class="form-group mt-2">
 									<div class="row ">
