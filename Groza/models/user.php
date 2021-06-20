@@ -168,9 +168,10 @@ class UserModel extends Model{
 				if(!$row)
 				{
 				$_SESSION['suscripcion_data'] = array(
-					"id" => $row['idSuscript'],
-					"precio" => $row['precio'],
-					"idcli" => $row['IdCli']
+					"id" => $row['idSuscript'][NULL],
+					"precio" => $row['precio'][NULL],
+					"tipoPlan" => $row['TipoPlan'][NULL],
+					"idcli" => $row['IdCli'][NULL]
 					/*
 					"id"	=> $row['IdProv'],
 					"name"	=> $row['NomProv'],
@@ -217,11 +218,22 @@ class UserModel extends Model{
         
         // Sanitize POST
 		$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
 		if(isset($post['password'])){
 			$password = md5($post['password']);	
 		}
-			
-        
+	
+		//if(count($_FILES) > 0)
+        //{
+           /* if (is_uploaded_file($_FILES['imagen']['tmp_name'])) {
+               echo "Entra al final";
+                // $imgContenido = file_get_contents($_FILES['imagen']['tmp_name']); // este es el blob
+            }*/
+        //}else
+		//{
+		 //echo "no entra";	
+		//}
+		
         if(isset($post['submit'])){
             
 
@@ -249,7 +261,7 @@ class UserModel extends Model{
                 
                 else {
 /*
-                    // chequea si subió una imagen
+                     chequea si subió una imagen
                     if (count($_FILES) > 0) {
                         if (is_uploaded_file($_FILES['imagen']['tmp_name'])) {
                             $imgContenido = file_get_contents($_FILES['imagen']['tmp_name']); // este es el blob
@@ -259,17 +271,30 @@ class UserModel extends Model{
                         // no subió ninguna imagen
                         $imgContenido = null;
                     } */
+					//chequea si subió una imagen
+					if (count($_FILES) > 0) {
+                        if (is_uploaded_file($_FILES['imagen']['tmp_name'])) {
+                            //print_r("Entra en el chequeo de la imagen");
+							$imgContenido = file_get_contents($_FILES['imagen']['tmp_name']); // este es el blob
+							
+						}
+                    }
+                    else{
+                        // no subió ninguna imagen
+						
+                        $imgContenido = null;
+                    }
                     
                     // Insert into MySQL
-                    $this->query('INSERT INTO cliente (PassCli, NomCli, ApellidoCli, EmailCli, SexoCli, NicknameCli) VALUES( :password, :name, :apellido, :email, :sexo, :nick)');
+                    $this->query('INSERT INTO cliente (PassCli, NomCli, ApellidoCli,ImgCli,FNCli,EmailCli, SexoCli, NicknameCli) VALUES( :password, :name, :apellido,:imagen, :fechaNac,:email, :sexo, :nick)');
                     $this->bind(':password', $password);  // $password hasheado
                     $this->bind(':name', $post['name']);
                     $this->bind(':apellido', $post['apellido']);
                     $this->bind(':email', $post['email']);
                     $this->bind(':sexo', $post['sexo']);
                     $this->bind(':nick', $post['nick']);
-                    //$this->bind(':fechaNac', $post['fechaNac']);
-                    //$this->bind(':imagen', $imgContenido );
+                    $this->bind(':fechaNac', $post['fechaNac']);
+                    $this->bind(':imagen', $imgContenido );
                     
                     $this->execute(); 
                     
@@ -288,8 +313,8 @@ class UserModel extends Model{
                         "email"	=> $row['EmailCli'],
                         "sexo"	=> $row['SexoCli'],
                         "nick"	=> $row['NicknameCli'],
-                        //"fechaNac"	=> $row['FNCli'],
-                        //"imagen"	=> $row['ImgCli']
+                        "fechaNac"	=> $row['FNCli'],
+                        "imagen"	=> $row['ImgCli']
                         
 
                     );
@@ -392,6 +417,72 @@ class UserModel extends Model{
 	$password = md5($post['password']);	
 	}
 
+	if($_SESSION['es_cliente']){
+			
+		$this->query('SELECT * FROM cliente where EmailCli=:email');
+		$this->bind(':email',$_SESSION['cliente_data']['email']);
+		$row= $this->single();
+	
+
+		if($row)
+		{
+
+			//Messages::setMsg("El usuario existe y esta listo para usarse",'error');
+			$this->query('INSERT INTO suscripcion (precio,tipoPlan,IdCli) VALUES(:precio,:tipoPlan,:idcli)');
+			$this->bind('precio','0');
+			$this->bind('tipoPlan','Free');
+			$this->bind(':idcli',$_SESSION['cliente_data']['id']);
+			
+			$this->execute(); 
+			/*
+			$this->query('INSERT INTO proveedor (PassProv, NomProv, ApellidoProv, EmailProv, SexoProv, NicknameProv ) VALUES(:password, :name, :apellido, :email, :sexo, :nick)');
+			$this->bind(':password', $password);  // $password hasheado
+			$this->bind(':name', $post['name']);
+			$this->bind(':apellido', $post['apellido']);
+			$this->bind(':email', $post['email']);
+			$this->bind(':sexo', $post['sexo']);
+			$this->bind(':nick', $post['nick']);
+			*/
+			
+			
+			$this->query('SELECT * FROM suscripcion WHERE IdCli = :idcli');
+			$this->bind(':idcli',$_SESSION['cliente_data']['id']);
+
+				$row = $this->single();
+				
+
+			$_SESSION['suscripcion_data'] = array(
+				"id" => $row['idSuscript'],
+				"precio" => $row['precio'],
+				"tipoPlan" => $row['tipoPlan'],
+				"idcli" => $row['IdCli']
+
+				/*
+				"id"	=> $row['IdProv'],
+				"name"	=> $row['NomProv'],
+				"apellido"	=> $row['ApellidoProv'],
+				"email"	=> $row['EmailProv'],
+				"sexo"	=> $row['SexoProv'],
+				"nick"	=> $row['NicknameProv'],
+				*/
+				//"fechaNac"	=> $row['FNProv'],
+			   // "imagen"	=> $row['ImgProv'],
+				//"biografia" => $post['BiografiaAut'],
+				//"password"	=> $row['PassProv']
+				
+			);
+			
+				
+			//header('Location: '.ROOT_URL.'home');	
+			
+				
+		}
+		
+	}
+	return;
+
+
+
 	}
 
 	public function silver()
@@ -417,9 +508,12 @@ class UserModel extends Model{
 			{
 
 				//Messages::setMsg("El usuario existe y esta listo para usarse",'error');
-				$this->query('INSERT INTO suscripcion (precio,IdCli) VALUES(:precio,:idcli)');
+				$this->query('INSERT INTO suscripcion (precio,tipoPlan,IdCli) VALUES(:precio,:tipoPlan,:idcli)');
 				$this->bind('precio','19.99');
+				$this->bind('tipoPlan','Silver');
 				$this->bind(':idcli',$_SESSION['cliente_data']['id']);
+				
+				$this->execute(); 
 				/*
 				$this->query('INSERT INTO proveedor (PassProv, NomProv, ApellidoProv, EmailProv, SexoProv, NicknameProv ) VALUES(:password, :name, :apellido, :email, :sexo, :nick)');
                 $this->bind(':password', $password);  // $password hasheado
@@ -429,7 +523,7 @@ class UserModel extends Model{
                 $this->bind(':sexo', $post['sexo']);
                 $this->bind(':nick', $post['nick']);
 				*/
-				$this->execute(); 
+				
 				
 				$this->query('SELECT * FROM suscripcion WHERE IdCli = :idcli');
 				$this->bind(':idcli',$_SESSION['cliente_data']['id']);
@@ -440,7 +534,9 @@ class UserModel extends Model{
 				$_SESSION['suscripcion_data'] = array(
 					"id" => $row['idSuscript'],
 					"precio" => $row['precio'],
+					"tipoPlan" => $row['tipoPlan'],
 					"idcli" => $row['IdCli']
+
 					/*
 					"id"	=> $row['IdProv'],
 					"name"	=> $row['NomProv'],
@@ -475,6 +571,71 @@ $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 	if(isset($post['password'])){
 	$password = md5($post['password']);	
 	}
+
+	if($_SESSION['es_cliente']){
+			
+		$this->query('SELECT * FROM cliente where EmailCli=:email');
+		$this->bind(':email',$_SESSION['cliente_data']['email']);
+		$row= $this->single();
+	
+
+		if($row)
+		{
+
+			//Messages::setMsg("El usuario existe y esta listo para usarse",'error');
+			$this->query('INSERT INTO suscripcion (precio,tipoPlan,IdCli) VALUES(:precio,:tipoPlan,:idcli)');
+			$this->bind('precio','49.99');
+			$this->bind('tipoPlan','Gold');
+			$this->bind(':idcli',$_SESSION['cliente_data']['id']);
+			
+			$this->execute(); 
+			/*
+			$this->query('INSERT INTO proveedor (PassProv, NomProv, ApellidoProv, EmailProv, SexoProv, NicknameProv ) VALUES(:password, :name, :apellido, :email, :sexo, :nick)');
+			$this->bind(':password', $password);  // $password hasheado
+			$this->bind(':name', $post['name']);
+			$this->bind(':apellido', $post['apellido']);
+			$this->bind(':email', $post['email']);
+			$this->bind(':sexo', $post['sexo']);
+			$this->bind(':nick', $post['nick']);
+			*/
+			
+			
+			$this->query('SELECT * FROM suscripcion WHERE IdCli = :idcli');
+			$this->bind(':idcli',$_SESSION['cliente_data']['id']);
+
+				$row = $this->single();
+				
+
+			$_SESSION['suscripcion_data'] = array(
+				"id" => $row['idSuscript'],
+				"precio" => $row['precio'],
+				"tipoPlan" => $row['tipoPlan'],
+				"idcli" => $row['IdCli']
+
+				/*
+				"id"	=> $row['IdProv'],
+				"name"	=> $row['NomProv'],
+				"apellido"	=> $row['ApellidoProv'],
+				"email"	=> $row['EmailProv'],
+				"sexo"	=> $row['SexoProv'],
+				"nick"	=> $row['NicknameProv'],
+				*/
+				//"fechaNac"	=> $row['FNProv'],
+			   // "imagen"	=> $row['ImgProv'],
+				//"biografia" => $post['BiografiaAut'],
+				//"password"	=> $row['PassProv']
+				
+			);
+			
+				
+			//header('Location: '.ROOT_URL.'home');	
+			
+				
+		}
+		
+	}
+	return;
+
 
 	}
 
@@ -541,15 +702,16 @@ $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 				} 
 
                 // Insert into MySQL
-                $this->query('INSERT INTO proveedor (PassProv, NomProv, ApellidoProv, EmailProv, SexoProv, NicknameProv ) VALUES(:password, :name, :apellido, :email, :sexo, :nick)');
+                $this->query('INSERT INTO proveedor (PassProv, NomProv, ApellidoProv, EmailProv, SexoProv, NicknameProv,NameEmpresa) VALUES(:password, :name, :apellido, :email, :sexo, :nick, :fechaNac,:imagen,:empresa)');
                 $this->bind(':password', $password);  // $password hasheado
                 $this->bind(':name', $post['name']);
                 $this->bind(':apellido', $post['apellido']);
                 $this->bind(':email', $post['email']);
                 $this->bind(':sexo', $post['sexo']);
                 $this->bind(':nick', $post['nick']);
-                //$this->bind(':fechaNac', $post['fechaNac']);
-                //$this->bind(':imagen', $imgContenido);
+                $this->bind(':fechaNac', $post['fechaNac']);
+                $this->bind(':imagen', $imgContenido);
+				$this->bind(':empresa',$post['NameEmpresa']);
                // $this->bind(':biografia', $post['biografia']);
                 
                 
@@ -570,10 +732,11 @@ $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
                 "email"	=> $row['EmailProv'],
                 "sexo"	=> $row['SexoProv'],
                 "nick"	=> $row['NicknameProv'],
-                //"fechaNac"	=> $row['FNProv'],
-               // "imagen"	=> $row['ImgProv'],
+                "fechaNac"	=> $row['FNProv'],
+                "imagen"	=> $row['ImgProv'],
                 //"biografia" => $post['BiografiaAut'],
-                "password"	=> $row['PassProv']
+                "password"	=> $row['PassProv'],
+				"empresa" => $row['NameEmpresa']
                 );
 
                 header('Location: '.ROOT_URL.'home');
@@ -653,8 +816,8 @@ public function login(){
 				"email"	=> $row['EmailProv'],
 				"sexo"	=> $row['SexoProv'],
 				"nick"	=> $row['NicknameProv'],
-				//"fechaNac"	=> $row['FNProv'],
-				//"imagen"	=> $row['ImgProv'],
+				"fechaNac"	=> $row['FNProv'],
+				"imagen"	=> $row['ImgProv'],
 				//"biografia" => $post['BiografiaAut'],
 				"password"	=> $row['PassProv']
 				);

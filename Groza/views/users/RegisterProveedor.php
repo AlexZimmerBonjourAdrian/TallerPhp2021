@@ -55,6 +55,18 @@ $_SESSION['es_proveedor'] = true;
 								</div>
 								
 							</div>
+
+							<div class="col-8">
+								<div class="form-group mt-2">
+											<input type="date" name="fechaNac" class="form-control" required
+												placeholder="Fecha de nacimiento" />
+										</div>
+									</div>
+									
+								<div class="form-group mt-2">
+									<input type="file" name="imagen" class="form-control" onchange="previewFile(this);"/>
+									</p><img id="previewImg" src=" " alt="Imagen usuario" height="100px"><p>
+								</div>	
 							<div class="row">
 								<div class="form-group mt-2">
 									<div class="row ">

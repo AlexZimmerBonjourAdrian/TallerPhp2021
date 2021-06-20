@@ -1,19 +1,26 @@
 
 	<script>
-			function previewFile(input){
-				var file = $("input[type=file]").get(0).files[0];
+	function previewFile() {
+ 	 var preview = document.querySelector('img');
+ 	 var file    = document.querySelector('input[type=file]').files[0];
+ 	 var reader  = new FileReader();
+
+ 	 reader.onloadend = function () {
+  	  preview.src = reader.result;
+  	}
+
+  	if (file) {
+   	 reader.readAsDataURL(file);
+  	} else {
+   	 preview.src = "";
+		}
+	}
+		</script>
+
+	
+
+
 		
-				if(file){
-					var reader = new FileReader();
-		
-					reader.onload = function(){
-						$("#previewImg").attr("src", reader.result);
-					}
-		
-					reader.readAsDataURL(file);
-				}
-			}
-	</script>
 
 <?php
 	$_SESSION['es_cliente'] = true;
@@ -54,6 +61,21 @@
 								</div>
 							
 							</div>
+							
+								<div class="col-8">
+											<input type="date" name="fechaNac" class="form-control" required
+												placeholder="Fecha de nacimiento" />
+								</div>
+								
+								<div class="form-group mt-2">
+									<input type="file" name="imagen" class="form-control" onchange="previewFile();" >
+									
+									<img src="" height="200" alt="Image preview...">
+								</div>	
+								
+
+								
+							</div>
 							<div class="row">
 								<div class="form-group mt-2">
 									<div class="row ">
@@ -69,6 +91,8 @@
 											<label for="sexo">Masculino</label>
 											<input type="radio" id="masculino" name="sexo" value="Masculino">
 										</div>
+										
+
 									</div>
 								</div>
 								

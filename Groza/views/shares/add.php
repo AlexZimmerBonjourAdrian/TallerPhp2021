@@ -15,7 +15,7 @@
 				//}
 			}
 			
-			
+			/*
 			function previewFile(input){
 				
 				var file = $("input[type=file]").get(0).files[0];
@@ -30,6 +30,7 @@
 					reader.readAsDataURL(file);
 				
 			}
+			*/
 			
 		</script>
 
@@ -109,15 +110,10 @@
 </div>
 
 <div class="form-group">
-
 		<label>Imagen</label>
-		<p>
-		<p><img id="previewImg" src=" "  style="width: 100px; height : 100px"/><p>
-		<input type="file" accept=".gif,.jpg,.jpeg,.png" type="file" name="file-input" class="form-control" onchange="previewFile(this);" />
-		</p>
-		
-    	
-		</div>
+		<input type="file" name="Imagen" class="form-control"  onchange="previewFile(this);" />
+		</p><img id="previewImg" src=" " alt=""><p>
+    	</div>
 		
 </div>
  <input class="btn btn-primary" name="submit" type="submit" value="Submit" />

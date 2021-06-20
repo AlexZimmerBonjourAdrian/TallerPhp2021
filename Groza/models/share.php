@@ -26,13 +26,22 @@ class ShareModel extends Model{
 		$row = $this->single();
 		
 
-		*/ if((isset($_SESSION['cliente_data']['id']) === isset($_SESSION['suscripcion_data']['idcli']))===false) 
+		*/
+		/* 
+		if((isset($_SESSION['cliente_data']['id']) === isset($_SESSION['suscripcion_data']['idcli']))===false || (isset($_SESSION['suscripcion_data']['tipoPlan']) != isset($_SESSION['recurso_data']['tipoPlan'])) 
 			{
 				
-				header('Location: '.ROOT_URL.'users/suscripcion');
-
+				if((isset(isset($_SESSION['Recurso_data']['tipoPlan'] == 'Silver' &&  isset($_SESSION['suscripcion_data']['idcli']) == 'Free'))
+				{
+					header('Location: '.ROOT_URL.'users/suscripcion');
+				}
+				else if(isset(isset($_SESSION['Recurso_data']['tipoPlan'] == 'Gold'  &&  isset($_SESSION['suscripcion_data']['idcli']) != 'Free') || isset($_SESSION['suscripcion_data']['idcli']) != 'Silver'))
+				{
+					header('Location: '.ROOT_URL.'users/suscripcion');
+				}
 			}
-			else{
+			*/
+			//else{
 			if($post['nombre'] == '')
 			{
 			
@@ -64,11 +73,11 @@ class ShareModel extends Model{
 				 "descript" => $row['Descript'],
 				 "tipo" => $row['Tipo'], 
 				 "tipoPlan" => $row['TipoPlan'],
-			 //	"ImgR" => $row['ImgR'],
+			 	"ImgR" => $row['ImgR'],
 				 "enlace" =>$row['Enlace'],
 				 "idProv" => $row['IdProv']
 			 );
-			}
+			//}
 			
 			}
 			return;
@@ -127,12 +136,12 @@ class ShareModel extends Model{
 
 		if($post['submit']){
 
-			//$img=file_get_contents(INPUT_POST,FILTER_SANITIZE_STRING);
-		/*	if( $post['NomRec'] == '' ||  $post['Descrip'] == '' || $post['Tipo'] == ''|| $post['TipoPlan']== '' || $post['Enlace']== ''){
+			$img=file_get_contents(INPUT_POST,FILTER_SANITIZE_STRING);
+			if( $post['NomRec'] == '' ||  $post['Descrip'] == '' || $post['Tipo'] == ''|| $post['TipoPlan']== '' || $post['Enlace']== ''){
 				Messages::setMsg('Please Fill In All Fields', 'error');
 				return;
 			}
-			*/
+			
 			if (count($_FILES) > 0) {
 				if (is_uploaded_file($_FILES['imagen']['tmp_name'])) {
 					$imgContenido = file_get_contents($_FILES['imagen']['tmp_name']); // este es el blob
@@ -167,13 +176,13 @@ class ShareModel extends Model{
 				"descript" => $row['Descript'],
 				"tipo" => $row['Tipo'], 
 				"tipoPlan" => $row['TipoPlan'],
-			//	"ImgR" => $row['ImgR'],
+				"ImgR" => $row['ImgR'],
 				"enlace" =>$row['Enlace'],
 				"idProv" => $row['IdProv']
 			);
 						
 			
-			header('Location: '.ROOT_URL.'home');
+			//header('Location: '.ROOT_URL.'home');
 			/*
 			// Insert into MySQL
 			$this->query('INSERT INTO shares (title, body, link, user_id) VALUES(:title, :body, :link, :user_id)');
