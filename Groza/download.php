@@ -1,31 +1,35 @@
 <?php
-if(isset($_Get['path']))
+if(isset($_GET['path']))
 {
-    if(file_exists($filename))
-    {
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header("Cache-Control: no-cache, must-revalidate");
-        header("Expires: 0");
-        header('Content-Disposition: attachment; filename="'.basename($filename).'"');
-        header('Content-Length: ' . filesize($filename));
-        header('Pragma: public');
-    }
+//Read the url
+$url = $_GET['path'];
 
-    flush();
+//Clear the cache
+clearstatcache();
 
-    readfile($filename);
+//Check the file path exists or not
+if(file_exists($url)) {
 
-    die();
-    
+//Define header information
+header('Content-Description: File Transfer');
+header('Content-Type: application/octet-stream');
+header('Content-Disposition: attachment; filename="'.basename($url).'"');
+header('Content-Length: ' . filesize($url));
+header('Pragma: public');
+
+//Clear system output buffer
+flush();
+
+//Read the size of the file
+readfile($url,true);
+
+//Terminate from the script
+die();
 }
-else[
-    echo "File is not defined";
-    {
-
-    }
-    else
-    echo "Filename is not defined";
-]
+else{
+echo "File path does not exist.";
+}
+}
+echo "File path is not defined."
 
 ?>

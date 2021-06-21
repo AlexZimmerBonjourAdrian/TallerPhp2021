@@ -18,4 +18,11 @@ class Shares extends Controller{
 		$viewmodel = new ShareModel();
 		$this->returnView($viewmodel->buscar(), true);
 	}
+/*
+	protected function download()
+	{
+		$viewmodel = new ShareModel();
+		
+	}
+	*/
 }

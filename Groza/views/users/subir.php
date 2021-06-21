@@ -99,12 +99,16 @@
         if ($archivoExiste === true) 
         {
             echo $_FILES["file"]["name"] . "already exists.";
+            $pathDowload="download.php?path=" . "assets/upload/" . $_FILES["file"]["name"];
         }
        else {
            move_uploaded_file($_FILES["file"]["tmp_name"],
                $targetfolder . $_FILES["file"]["name"]);
-       
-    }
+         $pathDowload="download.php?path=" . "assets/upload/". $_FILES["file"]["name"];
+     }
+     
+
+    
 //} }
 
 
@@ -112,3 +116,8 @@
 
 
 ?>
+ <p><a href="download.php?path=/Groza/assets/upload/379057.png">dowload  image File</a></p>
+ 
+ <p><a href="<?php echo $pathDowload ?>">Descargar</a></p>
+
+ <p><a href="<?php echo ROOT_URL;?><?php echo $pathDowload?>">descargar archivo</a></p>
