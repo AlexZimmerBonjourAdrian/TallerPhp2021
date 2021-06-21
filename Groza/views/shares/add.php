@@ -14,6 +14,8 @@
 					reader.readAsDataURL(file);
 				//}
 			}
+
+		
 			
 			/*
 			function previewFile(input){
@@ -116,9 +118,19 @@
     	</div>
 		
 </div>
+
+<div>
+<input type="file" class="form-control"  name="file" id="file" />
+
+ 
+</div>
  <input class="btn btn-primary" name="submit" type="submit" value="Submit" />
  <a class="btn btn-danger" href="<?php echo ROOT_PATH; ?>shares">Cancel</a>
 </form>
+
+
+
+
 
  </div>
 

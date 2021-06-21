@@ -23,6 +23,7 @@
 			<p><?php echo $item['Tipo']; ?></p>
 			<p><?php echo $item['TipoPlan']?></p>
 			<p><?php echo $item['Descript']; ?></p>
+			<p><?php echo $item ['Enlace']>download image file</a></p>
 			<br />
 			<?php if($item ['Enlace'])?>
 				<a class="btn btn-default mb-2" href="<?php echo $item['Enlace']; ?>" target="_blank">Descárgame!</a>

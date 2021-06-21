@@ -128,6 +128,28 @@ class ShareModel extends Model{
 
 	}
 	
+	public function UploadFile(){
+	
+			$file=file_get_contents(INPUT_POST,FILTER_SANITIZE_STRING);
+
+			if(count($_FILES) > 0)
+			{
+				$directorio=   ("ROOT_URL" + "/assets/resources/");
+				$archivo = $directorio . basename($_FILES["file"]["name"]); 
+				$tipoArchivo = strtolower(pathinfo($archivo,PATHINFO_EXTENSION));
+				if($tipoArchivo == "mov" || $tipoArchivo == "mp4" || $tipoArchivo =="mkv")
+				{
+					copy(file_get_contents($_FILES['file']['tmp_name']),$directorio);
+				}else
+				{
+					echo "no cargo";
+				}
+			}
+			else
+			{
+				echo "no  hay archivo";
+			}
+	}
 	
 
 	public function add(){
@@ -152,6 +174,7 @@ class ShareModel extends Model{
 				$imgContenido = null;
 			} 
 
+			UploadFile();
 
 			$this->query('INSERT INTO recurso (NomRec,Descript,Tipo,TipoPlan,ImgR,Enlace,IdProv) values(:nombre,:descrip,:tipo,:tipoPlan,imgR,:enlace,:idProv)');
 			$this->bind(':nombre', $post['NomRec']);

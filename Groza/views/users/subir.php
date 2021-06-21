@@ -1,5 +1,9 @@
 <?php
-  //var_dump($_FILES["file"]);
+
+
+//var_dump($_FILES["file"]);
+/*
+  //
   $directorio = "Groza/assets/resources/";
 
   //FileDestination
@@ -50,11 +54,61 @@
   
     }else{
         echo "El documento no es una imagen";
+    }*/
+    //$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+   // public function UploadFile(){
+	//if(isset($post['submit']))
+    //{
+        
+
+		/*
+        $file=file_get_contents(INPUT_POST,FILTER_SANITIZE_STRING);
+
+        if(count($_FILES) > 0)
+        {
+            $directorio=  "/assets/resources/";
+            $archivo = basename($_FILES["file"]["name"]); 
+            $tipoArchivo = strtolower(pathinfo($archivo, PATHINFO_EXTENSION));
+            if($tipoArchivo == "mov" || $tipoArchivo == "mp4" || $tipoArchivo =="mkv")
+            {
+                copy(file_get_contents($archivo,$directorio));
+            }else
+            {
+                echo "no cargo";
+            }
+        }
+        else
+        {
+            echo "no  hay archivo";
+        }
+        */
+        ini_set('upload_max_filesize', '50M');
+        ini_set('post_max_size', '50M');
+        ini_set('max_input_time', 300);
+        ini_set('max_execution_time', 300);
+        
+        $targetfolder = 'C:/wamp64/www/Groza/assets/upload/';
+
+        $archivoExiste=file_exists($targetfolder . $_FILES["file"]["name"]);
+        /*
+        if(!file_exists($targetfolder))
+        {
+            mkdir($targetfolder,0777, true);
+        }
+        */
+        if ($archivoExiste === true) 
+        {
+            echo $_FILES["file"]["name"] . "already exists.";
+        }
+       else {
+           move_uploaded_file($_FILES["file"]["tmp_name"],
+               $targetfolder . $_FILES["file"]["name"]);
+       
     }
-  
-  
+//} }
 
 
-  
+  //  }
+
 
 ?>
