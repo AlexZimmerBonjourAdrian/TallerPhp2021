@@ -21,7 +21,6 @@
             <li><a href="<?php echo ROOT_URL; ?>">Home</a></li>
             <li><a href="<?php echo ROOT_URL; ?>shares">Recursos</a></li>
             <li><a href="<?php echo ROOT_URL; ?>users/suscripcion">suscripcion</a></li>
-            <li><a href="<?php echo ROOT_URL; ?>users/exampleUpdateFile">ExampleUpdateFile</a></li>
           </ul>
           <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
        

@@ -1,5 +1,5 @@
 <h1> Hola<h1>
-<?php if((isset($post['nombre']) === '' )===false) : ?>
+<?php if(isset($post['nombre']) === '' ) : ?>
    
 <div>
 <div class="well mt-5">

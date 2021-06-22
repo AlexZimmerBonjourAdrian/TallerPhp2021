@@ -98,11 +98,7 @@
 		</div>	
 		
 
-		<div class="form-group">
-		<label>Link de Descarga</label>
-		<input type="text" name="Enlace" class="form-control"> 
-		</div>
-
+	
 
 	<p>Enviar un Archivo</p>
 	<div >
