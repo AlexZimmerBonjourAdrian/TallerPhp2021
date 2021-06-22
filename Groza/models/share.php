@@ -27,20 +27,20 @@ class ShareModel extends Model{
 		
 
 		*/
-		/* 
-		if((isset($_SESSION['cliente_data']['id']) === isset($_SESSION['suscripcion_data']['idcli']))===false || (isset($_SESSION['suscripcion_data']['tipoPlan']) != isset($_SESSION['recurso_data']['tipoPlan'])) 
+		
+		if((isset($_SESSION['cliente_data']['id']) === isset($_SESSION['suscripcion_data']['idcli']))===false || (isset($_SESSION['suscripcion_data']['tipoPlan']) != isset($_SESSION['recurso_data']['tipoPlan']))) 
 			{
 				
-				if((isset(isset($_SESSION['Recurso_data']['tipoPlan'] == 'Silver' &&  isset($_SESSION['suscripcion_data']['idcli']) == 'Free'))
+				if(isset($_SESSION['recurso_data']['tipoPlan']) === 'Silver'  &&  isset($_SESSION['suscripcion_data']['tipoPlan']) === 'Free')
 				{
 					header('Location: '.ROOT_URL.'users/suscripcion');
 				}
-				else if(isset(isset($_SESSION['Recurso_data']['tipoPlan'] == 'Gold'  &&  isset($_SESSION['suscripcion_data']['idcli']) != 'Free') || isset($_SESSION['suscripcion_data']['idcli']) != 'Silver'))
+				elseif(isset($_SESSION['recurso_data']['tipoPlan']) == 'Gold'  &&  ((isset($_SESSION['suscripcion_data']['idcli']) == 'Free') || isset($_SESSION['suscripcion_data']['idcli']) == 'Silver'))
 				{
 					header('Location: '.ROOT_URL.'users/suscripcion');
 				}
 			}
-			*/
+			
 			//else{
 			if($post['nombre'] == '')
 			{

@@ -20,7 +20,7 @@
 
 
 
-
+<?php if(isset($_SESSION['es_proveedor'])) : ?>
 
 <div class="panel panel-default">
  <div class="panel heading">

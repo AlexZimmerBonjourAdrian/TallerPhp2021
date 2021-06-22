@@ -305,7 +305,7 @@ class UserModel extends Model{
                     $this->bind(':password', $password);
 
                     $row = $this->single();
-                
+					
                     $_SESSION['cliente_data'] = array(
                         "id"	=> $row['IdCli'],
                         "password"	=> $row['PassCli'],
@@ -330,85 +330,7 @@ class UserModel extends Model{
 
 
 
-	/*
-	public function registerCliente(){
-
-        // Sanitize POST
-		$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-		if(isset($post['password'])){
-			$password = md5($post['password']);	
-		}
-			
-        
-        if(isset($post['submit'])){
-            
-
-            //si es cliente chequea campos requeridos para cliente
-            //if($_SESSION['es_cliente']){
-                if($post['name'] == '' || $post['apellido'] == '' || $post["sexo"] == '' || $post['nick'] == '' || $post['password'] == '' || $post['email'] == '' ){// $post['fechaNac'] == null ){
-                    Messages::setMsg('Please Fill In All Fields', 'error');
-                    return;
-                }
-
-                //chequea que no esté registrado
-                $this->query('SELECT * FROM cliente WHERE EmailCli = :email AND PassCli = :password');
-                $this->bind(':email', $post['email']);
-                $this->bind(':password', $password);
-                $row = $this->single();
-
-                $this->query('SELECT * FROM autor WHERE EmailAut = :email AND PassAut = :password');
-                $this->bind(':email', $post['email']);
-                $this->bind(':password', $password);
-                $row2 = $this->single();
-
-                if($row || $row2){
-                    Messages::setMsg('El usuario ya existe', 'error');
-                }
-                
-                else {
-
-                   
-                    // Insert into MySQL
-                    $this->query('INSERT INTO cliente (PassCli, NomCli, ApellidoCli, EmailCli, SexoCli, NicknameCli) VALUES( :password, :name, :apellido, :email, :sexo, :nick)');
-                    $this->bind(':password', $password);  // $password hasheado
-                    $this->bind(':name', $post['name']);
-                    $this->bind(':apellido', $post['apellido']);
-                    $this->bind(':email', $post['email']);
-                    $this->bind(':sexo', $post['sexo']);
-                    $this->bind(':nick', $post['nick']);
-                   // $this->bind(':fechaNac', $post['fechaNac']);
-                    //$this->bind(':imagen', $imgContenido );
-                    
-                    $this->execute(); 
-                    
-                    // se trae al usuario recien creado para setear sus datos en la sesion
-                    $this->query('SELECT * FROM cliente WHERE EmailCli = :email AND PassCli = :password');
-                    $this->bind(':email', $post['email']);
-                    $this->bind(':password', $password);
-
-                    $row = $this->single();
-                
-                    $_SESSION['cliente_data'] = array(
-                        "id"	=> $row['IdCli'],
-                        "password"	=> $row['PassCli'],
-                        "name"	=> $row['NomCli'],
-                        "apellido"	=> $row['ApellidoCli'],
-                        "email"	=> $row['EmailCli'],
-                        "sexo"	=> $row['SexoCli'],
-                        "nick"	=> $row['NicknameCli'],
-                        //"fechaNac"	=> $row['FNCli'],
-                       // "imagen"	=> $row['ImgCli']
-                        
-
-                    );
-
-                    header('Location: '.ROOT_URL.'home');
-                }
-            //} 
-            }
-            return;
-    }
-	*/
+	
 
 	public function free()
 	{
@@ -435,16 +357,7 @@ class UserModel extends Model{
 			$this->bind(':idcli',$_SESSION['cliente_data']['id']);
 			
 			$this->execute(); 
-			/*
-			$this->query('INSERT INTO proveedor (PassProv, NomProv, ApellidoProv, EmailProv, SexoProv, NicknameProv ) VALUES(:password, :name, :apellido, :email, :sexo, :nick)');
-			$this->bind(':password', $password);  // $password hasheado
-			$this->bind(':name', $post['name']);
-			$this->bind(':apellido', $post['apellido']);
-			$this->bind(':email', $post['email']);
-			$this->bind(':sexo', $post['sexo']);
-			$this->bind(':nick', $post['nick']);
-			*/
-			
+		
 			
 			$this->query('SELECT * FROM suscripcion WHERE IdCli = :idcli');
 			$this->bind(':idcli',$_SESSION['cliente_data']['id']);
@@ -705,7 +618,7 @@ $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 				} 
 
                 // Insert into MySQL
-                $this->query('INSERT INTO proveedor (PassProv, NomProv, ApellidoProv, EmailProv, ImgProv,FNProv, NomEmpresa,NicknameProv,SexoProv) VALUES(:password,:name,:apellido,:email,:imagen,:fechaNac,:empresa,:sexo,:nick)');
+                $this->query('INSERT INTO proveedor (PassProv, NomProv, ApellidoProv, EmailProv, ImgProv,FNProv, NomEmpresa,SexoProv,NicknameProv) VALUES(:password,:name,:apellido,:email,:imagen,:fechaNac,:empresa,:sexo,:nick)');
                 $this->bind(':password', $password);  // $password hasheado
                 $this->bind(':name', $post['name']);
                 $this->bind(':apellido', $post['apellido']);
@@ -717,6 +630,7 @@ $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 				$this->bind(':empresa',$post['empresa']);
                // $this->bind(':biografia', $post['biografia']);
                 
+			   
                 
                 $this->execute(); 
                 
@@ -734,7 +648,7 @@ $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
                 "apellido"	=> $row['ApellidoProv'],
                 "email"	=> $row['EmailProv'],
                 "sexo"	=> $row['SexoProv'],
-                "nick"	=> $row['NicknameProv'],
+                "nick"	=> $row['Nickname'],
                 "fechaNac"	=> $row['FNProv'],
                 "imagen"	=> $row['ImgProv'],
                 //"biografia" => $post['BiografiaAut'],
