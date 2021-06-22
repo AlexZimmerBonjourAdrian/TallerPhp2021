@@ -24,6 +24,7 @@
    
   
    <label text-align="center" for="gold" id="gold" name="Precio" value="39.99"></label>
+
     <li><a href="<?php echo ROOT_URL; ?>users/gold">Suscribirse a ORO</a></li>
    
     <?php endif;?>

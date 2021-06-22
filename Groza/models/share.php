@@ -158,40 +158,77 @@ class ShareModel extends Model{
 
 		if($post['submit']){
 
-			$img=file_get_contents(INPUT_POST,FILTER_SANITIZE_STRING);
-			if( $post['NomRec'] == '' ||  $post['Descrip'] == '' || $post['Tipo'] == ''|| $post['TipoPlan']== '' || $post['Enlace']== ''){
+			
+			//$img=file_get_contents(INPUT_POST,FILTER_SANITIZE_STRING);
+			if( $post['NomRec'] == '' ||  $post['Descript'] == '' || $post['Tipo'] == ''|| $post['TipoPlan']== '' || file_exists($_FILES["file"]["name"])  ){
 				Messages::setMsg('Please Fill In All Fields', 'error');
 				return;
 			}
 			
-			if (count($_FILES) > 0) {
+			
+			if (count($_FILES) > 0) 
+			{
+				
+				$targetfolder = 'C:/wamp64/www/Groza/assets/upload/';
+
+			$archivoExiste=file_exists($targetfolder . $_FILES["file"]["name"]);
 				if (is_uploaded_file($_FILES['imagen']['tmp_name'])) {
 					$imgContenido = file_get_contents($_FILES['imagen']['tmp_name']); // este es el blob
 				}
+
+				if ($archivoExiste === true) 
+				{
+					echo $_FILES["file"]["name"] . "El archivo ya";
+					$pathDownload="download.php?path=" . "assets/upload/" . $_FILES["file"]["name"];
+				}
+				
+				else {
+					move_uploaded_file($_FILES["file"]["tmp_name"],
+						$targetfolder . $_FILES["file"]["name"]);
+				  $pathDownload="download.php?path=" . "assets/upload/". $_FILES["file"]["name"];
+				 }
 			}
 			else{
 				// no subió ninguna imagen
 				$imgContenido = null;
 			} 
 
-			UploadFile();
+			
+			
+			
+			
+			
+		//	UploadFile();
 
-			$this->query('INSERT INTO recurso (NomRec,Descript,Tipo,TipoPlan,ImgR,Enlace,IdProv) values(:nombre,:descrip,:tipo,:tipoPlan,imgR,:enlace,:idProv)');
-			$this->bind(':nombre', $post['NomRec']);
-			$this->bind(':descrip', $post['Descript']);
-			$this->bind(':imgR',NULL);
-			$this->bind(':tipo',$post['Tipo']);
-			$this->bind(':tipoPlan',$post['TipoPlan']);
-			$this->bind(':enlace',$post['Enlace']);
+		$this->query('INSERT INTO recurso (NomRec,Descrip,Tipo,TipoPlan,ImgR,Enlace,IdProv) values(:nombre,:descrip,:tipo,:tipoPlan,:imgR,:enlace,:idProv)');
+		$this->bind(':nombre', $post['NomRec']);
+		$this->bind(':descrip', $post['Descript']);
+		$this->bind(':imgR',$imgContenido);
+		$this->bind(':tipo',$post['Tipo']);
+		$this->bind(':tipoPlan',$post['TipoPlan']);
+		$this->bind(':enlace',$pathDownload);
+		$this->bind(':idProv',$_SESSION['proveedor_data']['id']);
+		
+			
+			$this->execute();
+			/*
+			$this->query('INSERT INTO recurso (idRec,NomRec,Descrip,Tipo,TipoPlan,ImgR,Enlace,IdProv) values(:nombre,:descrip,:tipo,:tipoPlan,:imagen,:enlace,:idProv)');
+			$this->bind(':nombre', "Alex");
+			$this->bind(':descrip', "Hola que hace");
+			$this->bind(':imagen',NUll);
+			$this->bind(':tipo',"Libro");
+			$this->bind(':tipoPlan',"Free");
+			$this->bind(':enlace',"Link");
 			$this->bind(':idProv',$_SESSION['proveedor_data']['id']);
 			
 			$this->execute();
+*/
 
 			$this->query('SELECT * FROM recurso WHERE NomRec = :nombre');
 			$this->bind(':nombre',$post['nombre']);
 			
 			$row = $this->single();
-
+			
 			$_SESSION['is_logged_in'] = true;
 			$_SESSION['recurso_data'] = array(
 				"id" => $row['IdRec'],
@@ -199,11 +236,13 @@ class ShareModel extends Model{
 				"descript" => $row['Descript'],
 				"tipo" => $row['Tipo'], 
 				"tipoPlan" => $row['TipoPlan'],
-				"ImgR" => $row['ImgR'],
+				"imgR" => $row['ImgR'],
 				"enlace" =>$row['Enlace'],
 				"idProv" => $row['IdProv']
 			);
-						
+				
+			header('Location: '.ROOT_URL.'shares');	
+			//	
 			
 			//header('Location: '.ROOT_URL.'home');
 			/*
@@ -221,8 +260,13 @@ class ShareModel extends Model{
 				header('Location: '.ROOT_URL.'shares');
 			}*/
 			//header('Location: '.ROOT_URL.'home');
+			
 		}
 		
-		return;
+		return;	
 	}
+	
+	
+
+	
 }
