@@ -31,7 +31,8 @@
 			<p><?php echo $item['Descrip']; ?></p>
 			<br />
 			<?php if($item ['Enlace'])?>
-				<a href="<?php echo $item['Enlace']; ?>">Descárgame!</a>
+			<?php if($_SESSION['recurso_data']['enlace'])?>
+				<a class="btn btn-default mb-2" href="<?php echo $item['Enlace'] ?>" target="_blank">Descárgame!</a>
 		</div>
 	<?php endforeach; ?>
 	

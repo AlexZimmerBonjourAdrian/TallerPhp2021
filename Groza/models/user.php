@@ -1,36 +1,6 @@
 <?php
 session_start();
-/*
-class UserModel extends Model{
-public function register(){
 
-	$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-	if(isset($post['password']))
-	{
-		$password =md5($post['password']);
-	}
-
-
-}
-public function registerCliente()
-{
-	$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-	if(isset($post['password']))
-	{
-		$password=md5($post['password']);
-	}
-
-
-	if(isset($post['submit']))
-	{
-		
-	}
-
-
-
-}
-}
-*/
 
 
 class UserModel extends Model{
@@ -43,172 +13,11 @@ class UserModel extends Model{
 		}
 		
     }    
-//Register Client Simple
-
-
-//Region
-/*
-	public function registerCliente(){
-		// Sanitize POST
-		$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-
-		$password = md5($post['password']);
-
-		if($post['submit']){
-
-			if($post['name'] == '' || $post['apellido'] == '' || $post["sexo"] == '' || $post['nick'] == '' || $post['password'] == '' || $post['email'] == '' ){
-				Messages::setMsg('Please Fill In All Fields', 'error');
-				return;
-			}
-
-			$this->query('SELECT * FROM cliente WHERE EmailCli = :email AND PassCli = :password');
-			$this->bind(':email', $post['email']);
-			$this->bind(':password', $password);
-
-			$row = $this->single();
 
 
 
-			if($row){
-				Messages::setMsg('El Cliente ya existe', 'error');
-			}
-			else {
-				
-				// Insert into MySQL
-				$this->query('INSERT INTO cliente (PassCli, NomCli,ApellidoCli,EmailCli,SexoCli,NicknameCli) VALUES(:password, :name, :apellido, :email,:sexo, :nick )');
-				$this->bind(':password', $password);  // $password hasheado
-				$this->bind(':name', $post['name']);
-				$this->bind(':apellido', $post['apellido']);
-				$this->bind(':email', $post['email']);
-				$this->bind(':sexo', $post['sexo']);
-				$this->bind(':nick', $post['nick']);
-				//$this->bind(':fechaNac', $post['fechaNac']);
-				
-				$this->execute();
-
-				$this->query('SELECT * FROM cliente WHERE EmailCli = :email AND PassCli = :password');
-				$this->bind(':email', $post['email']);
-				$this->bind(':password', $password);
-		
-				$row = $this->single();
-				
-				$_SESSION['is_logged_in'] = true;
-				$_SESSION['cliente_data'] = array(
-				"id"	=> $row['IdCli'],
-				"password" => $row['PassCli'],
-				"name" => $row['NomCli'],
-				"apellido" => $row['ApellidoCli'],
-				"email" => $row['EmailCli'],
-				"sexo" => $row['SexoCli'],
-				"nick" =>$row['NicknameCli'],
-				//"fechaNac" =>$row['FNCLI']
-
-			
-				);
-
-				header('Location: '.ROOT_URL.'home');
-				
-			}
-
-		}
-		return;
-	}
-	*/
-	//loginSimple
-
-	public function cancelarSuscripcion()
-	{
-		/*
-		$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-		if(isset($post['password'])){
-			$password = md5($post['password']);	
-		}*/
-
-		$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-
-	if(isset($post['password'])){
-	$password = md5($post['password']);	
-	}
-	
-	//if($post['submit']){
-		//header('Location: '.ROOT_URL.'home');
-		//Messages::setMsg("El usuario existe y esta listo para usarse",'error');
-        //if($_SESSION['es_cliente']){
-			
-			$this->query('SELECT * FROM cliente where EmailCli=:email');
-			$this->bind(':email',$_SESSION['cliente_data']['email']);
-			$row= $this->single();
-		
-
-			if($row)
-			{
-
-				//Messages::setMsg("El usuario existe y esta listo para usarse",'error');
-				$this->query('DELETE FROM suscripcion WHERE IdCli=:idcli');
-				//$this->bind('precio','19.99');
-				//$this->bind('id');
-				$this->bind(':idcli',$_SESSION['suscripcion_data']['idcli']);
-				/*
-				$this->query('INSERT INTO proveedor (PassProv, NomProv, ApellidoProv, EmailProv, SexoProv, NicknameProv ) VALUES(:password, :name, :apellido, :email, :sexo, :nick)');
-                $this->bind(':password', $password);  // $password hasheado
-                $this->bind(':name', $post['name']);
-                $this->bind(':apellido', $post['apellido']);
-                $this->bind(':email', $post['email']);
-                $this->bind(':sexo', $post['sexo']);
-                $this->bind(':nick', $post['nick']);
-				*/
-				$this->execute(); 
-				
-				
-				$this->query('SELECT * FROM suscripcion WHERE IdCli = :idcli');
-				$this->bind(':idcli',$_SESSION['suscripcion_data']['idcli']);
-
-                    $row = $this->single();
-				
-				if(!$row)
-				{
-				$_SESSION['suscripcion_data'] = array(
-					"id" => $row['idSuscript'][NULL],
-					"precio" => $row['precio'][NULL],
-					"tipoPlan" => $row['TipoPlan'][NULL],
-					"idcli" => $row['IdCli'][NULL]
-					/*
-					"id"	=> $row['IdProv'],
-					"name"	=> $row['NomProv'],
-					"apellido"	=> $row['ApellidoProv'],
-					"email"	=> $row['EmailProv'],
-					"sexo"	=> $row['SexoProv'],
-					"nick"	=> $row['NicknameProv'],
-					*/
-					//"fechaNac"	=> $row['FNProv'],
-				   // "imagen"	=> $row['ImgProv'],
-					//"biografia" => $post['BiografiaAut'],
-					//"password"	=> $row['PassProv']
-					
-				);
-				}
-				
-					
-				//header('Location: '.ROOT_URL.'home');	
-			
-					
-			}
-			
-		//}
-		return;
-	//}
-	
 
 
-	}
-
-	public function subir()
-	{
-		$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-		if(isset($post['password'])){
-			$password = md5($post['password']);	
-		}
-	}
 	
 	
 
@@ -223,16 +32,7 @@ class UserModel extends Model{
 			$password = md5($post['password']);	
 		}
 	
-		//if(count($_FILES) > 0)
-        //{
-           /* if (is_uploaded_file($_FILES['imagen']['tmp_name'])) {
-               echo "Entra al final";
-                // $imgContenido = file_get_contents($_FILES['imagen']['tmp_name']); // este es el blob
-            }*/
-        //}else
-		//{
-		 //echo "no entra";	
-		//}
+	
 		
         if(isset($post['submit'])){
             
@@ -261,17 +61,7 @@ class UserModel extends Model{
                 }
                 
                 else {
-/*
-                     chequea si subió una imagen
-                    if (count($_FILES) > 0) {
-                        if (is_uploaded_file($_FILES['imagen']['tmp_name'])) {
-                            $imgContenido = file_get_contents($_FILES['imagen']['tmp_name']); // este es el blob
-                        }
-                    }
-                    else{
-                        // no subió ninguna imagen
-                        $imgContenido = null;
-                    } */
+
 					//chequea si subió una imagen
 					if (count($_FILES) > 0) {
                         if (is_uploaded_file($_FILES['imagen']['tmp_name'])) {
@@ -332,243 +122,11 @@ class UserModel extends Model{
 
 	
 
-	public function free()
-	{
-		$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-
-	if(isset($post['password'])){
-	$password = md5($post['password']);	
-	}
-
-	if($_SESSION['es_cliente']){
-			
-		$this->query('SELECT * FROM cliente where EmailCli=:email');
-		$this->bind(':email',$_SESSION['cliente_data']['email']);
-		$row= $this->single();
 	
 
-		if($row)
-		{
-
-			//Messages::setMsg("El usuario existe y esta listo para usarse",'error');
-			$this->query('INSERT INTO suscripcion (precio,tipoPlan,IdCli) VALUES(:precio,:tipoPlan,:idcli)');
-			$this->bind('precio','0');
-			$this->bind('tipoPlan','Free');
-			$this->bind(':idcli',$_SESSION['cliente_data']['id']);
-			
-			$this->execute(); 
-		
-			
-			$this->query('SELECT * FROM suscripcion WHERE IdCli = :idcli');
-			$this->bind(':idcli',$_SESSION['cliente_data']['id']);
-
-				$row = $this->single();
-				
-
-			$_SESSION['suscripcion_data'] = array(
-				"id" => $row['idSuscript'],
-				"precio" => $row['precio'],
-				"tipoPlan" => $row['tipoPlan'],
-				"idcli" => $row['IdCli']
-
-				/*
-				"id"	=> $row['IdProv'],
-				"name"	=> $row['NomProv'],
-				"apellido"	=> $row['ApellidoProv'],
-				"email"	=> $row['EmailProv'],
-				"sexo"	=> $row['SexoProv'],
-				"nick"	=> $row['NicknameProv'],
-				*/
-				//"fechaNac"	=> $row['FNProv'],
-			   // "imagen"	=> $row['ImgProv'],
-				//"biografia" => $post['BiografiaAut'],
-				//"password"	=> $row['PassProv']
-				
-			);
-			
-				
-			//header('Location: '.ROOT_URL.'home');	
-			
-				
-		}
-		
-	}
-	return;
-
-
-
-	}
-
-	public function silver()
-	{
-		
-	$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-/*
-	if(isset($post['password'])){
-	$password = md5($post['password']);	
-	}
-	*/
-	//if($post['submit']){
-		//header('Location: '.ROOT_URL.'home');
-		//Messages::setMsg("El usuario existe y esta listo para usarse",'error');
-        if($_SESSION['es_cliente']){
-			
-			$this->query('SELECT * FROM cliente where EmailCli=:email');
-			$this->bind(':email',$_SESSION['cliente_data']['email']);
-			$row= $this->single();
-		
-
-			if($row)
-			{
-
-				//Messages::setMsg("El usuario existe y esta listo para usarse",'error');
-				$this->query('INSERT INTO suscripcion (precio,tipoPlan,IdCli) VALUES(:precio,:tipoPlan,:idcli)');
-				$this->bind('precio','19.99');
-				$this->bind('tipoPlan','Silver');
-				$this->bind(':idcli',$_SESSION['cliente_data']['id']);
-				
-				$this->execute(); 
-				/*
-				$this->query('INSERT INTO proveedor (PassProv, NomProv, ApellidoProv, EmailProv, SexoProv, NicknameProv ) VALUES(:password, :name, :apellido, :email, :sexo, :nick)');
-                $this->bind(':password', $password);  // $password hasheado
-                $this->bind(':name', $post['name']);
-                $this->bind(':apellido', $post['apellido']);
-                $this->bind(':email', $post['email']);
-                $this->bind(':sexo', $post['sexo']);
-                $this->bind(':nick', $post['nick']);
-				*/
-				
-				
-				$this->query('SELECT * FROM suscripcion WHERE IdCli = :idcli');
-				$this->bind(':idcli',$_SESSION['cliente_data']['id']);
-
-                    $row = $this->single();
-					
-
-				$_SESSION['suscripcion_data'] = array(
-					"id" => $row['idSuscript'],
-					"precio" => $row['precio'],
-					"tipoPlan" => $row['tipoPlan'],
-					"idcli" => $row['IdCli']
-
-					/*
-					"id"	=> $row['IdProv'],
-					"name"	=> $row['NomProv'],
-					"apellido"	=> $row['ApellidoProv'],
-					"email"	=> $row['EmailProv'],
-					"sexo"	=> $row['SexoProv'],
-					"nick"	=> $row['NicknameProv'],
-					*/
-					//"fechaNac"	=> $row['FNProv'],
-				   // "imagen"	=> $row['ImgProv'],
-					//"biografia" => $post['BiografiaAut'],
-					//"password"	=> $row['PassProv']
-					
-				);
-				
-					
-				//header('Location: '.ROOT_URL.'home');	
-				
-					
-			}
-			
-		}
-		return;
-	//}
 	
-}
-
-	public function gold()
-	{
-$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-
-	if(isset($post['password'])){
-	$password = md5($post['password']);	
-	}
-
-	if($_SESSION['es_cliente']){
-			
-		$this->query('SELECT * FROM cliente where EmailCli=:email');
-		$this->bind(':email',$_SESSION['cliente_data']['email']);
-		$row= $this->single();
 	
-
-		if($row)
-		{
-
-			//Messages::setMsg("El usuario existe y esta listo para usarse",'error');
-			$this->query('INSERT INTO suscripcion (precio,tipoPlan,IdCli) VALUES(:precio,:tipoPlan,:idcli)');
-			$this->bind('precio','49.99');
-			$this->bind('tipoPlan','Gold');
-			$this->bind(':idcli',$_SESSION['cliente_data']['id']);
-			
-			$this->execute(); 
-			/*
-			$this->query('INSERT INTO proveedor (PassProv, NomProv, ApellidoProv, EmailProv, SexoProv, NicknameProv ) VALUES(:password, :name, :apellido, :email, :sexo, :nick)');
-			$this->bind(':password', $password);  // $password hasheado
-			$this->bind(':name', $post['name']);
-			$this->bind(':apellido', $post['apellido']);
-			$this->bind(':email', $post['email']);
-			$this->bind(':sexo', $post['sexo']);
-			$this->bind(':nick', $post['nick']);
-			*/
-			
-			
-			$this->query('SELECT * FROM suscripcion WHERE IdCli = :idcli');
-			$this->bind(':idcli',$_SESSION['cliente_data']['id']);
-
-				$row = $this->single();
-				
-
-			$_SESSION['suscripcion_data'] = array(
-				"id" => $row['idSuscript'],
-				"precio" => $row['precio'],
-				"tipoPlan" => $row['tipoPlan'],
-				"idcli" => $row['IdCli']
-
-				/*
-				"id"	=> $row['IdProv'],
-				"name"	=> $row['NomProv'],
-				"apellido"	=> $row['ApellidoProv'],
-				"email"	=> $row['EmailProv'],
-				"sexo"	=> $row['SexoProv'],
-				"nick"	=> $row['NicknameProv'],
-				*/
-				//"fechaNac"	=> $row['FNProv'],
-			   // "imagen"	=> $row['ImgProv'],
-				//"biografia" => $post['BiografiaAut'],
-				//"password"	=> $row['PassProv']
-				
-			);
-			
-				
-			//header('Location: '.ROOT_URL.'home');	
-			
-				
-		}
-		
-	}
-	return;
-
-
-	}
-
-	public function suscripcion()
-	{
-		$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-		if(isset($post['password'])){
-			$password = md5($post['password']);	
-		}
-	
-	}
-	
-  public function ExampleUpdateFile()
-  {
-	$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-	if(isset($post['password'])){
-		$password = md5($post['password']);	
-	}
-  }
+ 
 	public function registerProveedor(){
         // Sanitize POST
 
@@ -663,48 +221,6 @@ $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
         return;
     }
 
-//Mi Login basico para probarlo
-/*
-	public function login(){
-		// Sanitize POST
-		$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-
-		if(isset($post['password'])){
-		$password = md5($post['password']);	
-		}
-
-		 if(isset($post['submit'])){
-		
-			$this->query('SELECT * FROM cliente WHERE EmailCli = :email AND PassCli = :password');
-			$this->bind(':email', $post['email']);
-			$this->bind(':password', $password);
-			
-			$row = $this->single();
-	
-			if($row){
-				$_SESSION['is_logged_in'] = true;
-				$_SESSION['cliente_data'] = array(
-					"id"	=> $row['IdCli'],
-					"password"	=> $row['PassCli'],
-					"name"	=> $row['NomCli'],login
-					"apellido"	=> $row['ApellidoCli'],
-					"email"	=> $row['EmailCli'],
-					"sexo"	=> $row['SexoCli'],
-					"nick"	=> $row['NicknameCli'],
-					//"fechaNac"	=> $row['FNCli'],
-					//"imagen"	=> $row['ImgCli']
-				);
-				
-				
-				header('Location: '.ROOT_URL.'shares');} 
-		}else {
-				Messages::setMsg('Incorrect Login', 'error');
-			}
-		
-		return;
-	}
-*/
-
 
 
 public function login(){
@@ -735,7 +251,7 @@ public function login(){
 				"nick"	=> $row['NicknameProv'],
 				"fechaNac"	=> $row['FNProv'],
 				"imagen"	=> $row['ImgProv'],
-				//"biografia" => $post['BiografiaAut'],
+
 				"password"	=> $row['PassProv']
 				);
 			
@@ -776,76 +292,7 @@ public function login(){
 
 }
 
-/*
-public function login(){
-	// Sanitize POST
-	$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
-	if(isset($post['password'])){
-	$password = md5($post['password']);	
-	}
-
-	 if(isset($post['submit'])){
-	
-		$this->query('SELECT * FROM cliente WHERE EmailCli = :email AND PassCli = :password');
-		$this->bind(':email', $post['email']);
-		$this->bind(':password', $password);
-		
-		$row = $this->single();
-
-		if($row){
-			$_SESSION['is_logged_in'] = true;
-			$_SESSION['cliente_data'] = array(
-				"id"	=> $row['IdCli'],
-				"password"	=> $row['PassCli'],
-				"name"	=> $row['NomCli'],
-				"apellido"	=> $row['ApellidoCli'],
-				"email"	=> $row['EmailCli'],
-				"sexo"	=> $row['SexoCli'],
-				"nick"	=> $row['NicknameCli'],
-				//"fechaNac"	=> $row['FNCli'],
-				//"imagen"	=> $row['ImgCli']
-			);
-			
-			
-			header('Location: '.ROOT_URL.'shares');} 
-	} elseif($post['submit']){
-		
-		$this->query('SELECT * FROM Provee WHERE EmailProv = :email AND PassProv = :password');
-		$this->bind(':email', $post['email']);
-		$this->bind(':password', $password);
-		
-		$row = $this->single();
-
-		if($row){
-			$_SESSION['is_logged_in'] = true;
-			$_SESSION['Proveedor_data'] = array(
-				"id"	=> $row['IdProv'],
-				"password"	=> $row['PassProv'],
-				"name"	=> $row['NomProv'],
-				"apellido"	=> $row['ApellidoProv'],
-				"email"	=> $row['EmailProv'],
-				"sexo"	=> $row['SexoProv'],
-				"nick"	=> $row['NicknameProv'],
-				//"fechaNac"	=> $row['FNCli'],
-				//"imagen"	=> $row['ImgCli']
-			);
-			
-			header('Location: '.ROOT_URL.'shares');
-
-		} 
-	else {
-			Messages::setMsg('Incorrect Login', 'error');
-		}
-	
-	return;
-	
-}*/
-//Login Completo
-
-
-
-//}
 
 
 

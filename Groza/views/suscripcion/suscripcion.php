@@ -33,7 +33,7 @@
     <div class = "form-group">
      <div class="container">
      
-     <li><a href="<?php echo ROOT_URL; ?>users/cancelarSuscripcion">Cancelar Suscripcion</a></li>
+     <li><a href="<?php echo ROOT_URL; ?>suscripcion/cancelarSuscripcion">Cancelar Suscripcion</a></li>
      
      </div>
      </div>

@@ -33,26 +33,6 @@
 	<label>Nombre</label>
 	<input type="text" name="NomRec" class="form-control" />
 </div>
-<!--
-<div class="form-group">
-<input type="radio" id="NSuscrip" name="Suscrip" value="0" class="form-control">
-<label for="NSuscrip">Gratis</label><br>
-<input type="radio" id="Suscrip" name ="Suscrip" value="1" class="form-control">
-
--->
-
-
-
-<!-- Agregar la configuracion de agregar la imagen si hace falta claro --> 
-
-
-<!--
-<div class="form-group">
-		<label>Imagen</label>
-		<input type="file" name="Imagen" class="form-control" onchange="previewFile(this);" >
-		</p><img id="previewImg" src=" " alt=""><p>
-    	</div>
--->
 
 
 
