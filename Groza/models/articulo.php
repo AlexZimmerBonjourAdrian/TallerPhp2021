@@ -9,82 +9,127 @@ class  ArticuloModel extends Model{
 		return $rows;
 	}
 
-
 	public function buscar(){
 
-	$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+		$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+		
+		/*if($post['submit']){
+		{
 	
-	if(isset($post['submit'])){
+			if($post['nombre'] == ''){
+				Messages::setMsg('Please Fill In All Fields', 'error');
+				return;
+				
+			}
+			else{
+			
+			$this->query('SELECT * FROM recurso WHILE :nombre = nombre');
+			$this->bind(':nombre',$post['nombre']);
+			$row = $this->single();
+			
 	
-	echo "entra al submit";
-		if($post['nombre'] == ''){
-			Messages::setMsg("se deve ingresar un nombre","error");
-			header('Location: '.ROOT_URL.'articulos');
-			return;
+			*/
+			
+			if((isset($_SESSION['cliente_data']['id']) === isset($_SESSION['suscripcion_data']['idcli']))===false || (isset($_SESSION['suscripcion_data']['tipoPlan']) != isset($_SESSION['recurso_data']['tipoPlan']))) 
+				{
+					
+					if(isset($_SESSION['recurso_data']['tipoPlan']) === 'Silver'  &&  isset($_SESSION['suscripcion_data']['tipoPlan']) === 'Free')
+					{
+						header('Location: '.ROOT_URL.'users/suscripcion');
+					}
+					elseif(isset($_SESSION['recurso_data']['tipoPlan']) == 'Gold'  &&  ((isset($_SESSION['suscripcion_data']['idcli']) == 'Free') || isset($_SESSION['suscripcion_data']['idcli']) == 'Silver'))
+					{
+						header('Location: '.ROOT_URL.'users/suscripcion');
+					}
+				}
+				
+				//else{
+				if($post['nombre'] == '')
+				{
+				
+					Messages::setMsg("se deve ingresar un nombre","error");
+	
+				}
+				
+				else{
+				echo $post['nombre'];
+				
+				 $this->query('SELECT * FROM recurso WHERE NomRec = :nombre');
+				 $this->bind(':nombre',$post['nombre']);
+				
+				 $row= $this->single();
+				
+	
+				 /*
+				 $this->query('SELECT * FROM recurso WHERE NomRec = :nombre');
+				 $this->bind(':nombre',$post['nombre']);
+				 $row= $this->single();
+	*/
+	
+				 //$_SESSION['is_logged_in'] = true;
+				 if($row)
+				 {
+				 //$_SESSION['is_logged_in'] = true;
+				 $_SESSION['recurso_data'] = array(
+					 "name" =>$row['NomRec'],
+					 "descript" => $row['Descrip'],
+					 "tipo" => $row['Tipo'], 
+					 "tipoPlan" => $row['TipoPlan'],
+					 "ImgR" => $row['ImgR'],
+					 "enlace" =>$row['Enlace'],
+					 "idProv" => $row['IdProv']
+				 );
+				//}
+				
+				}
+				return;
+				
+				 
+	
+				 }
+				 
+				// else{
+				// 	Messages::setMsg('El Recurso no se a encontrado','error');
+				//  }
+	/*
+				 if($row)
+				 {
+					$this->query('SELECT * FROM recurso WHERE NomRec = :nombre');
+					$this->bind(':nombre',$post['nombre']);
+				   
+					$row= $this->single();
+					//$_SESSION['is_logged_in'] = true;
+					$_SESSION['recurso_data'] = array(
+						"id" => $row['IdRec'],
+						"name" =>$row['NomRec'],
+						"descript" => $row['Descript'],
+						"tipo" => $row['Tipo'], 
+						"tipoPlan" => $row['TipoPlan'],
+					//	"ImgR" => $row['ImgR'],
+						"enlace" =>$row['Enlace'],
+						"idProv" => $row['IdProv']
+					);
+	
+						//header('Location: '.ROOT_URL.'shares');
+					
+				 }
+				 else{
+					Messages::setMsg('El Recurso no se a encontrado','error');
+				 }
+	 */
+			
+		
+				
+			//}
+			// return;
+			
+			
+		
+			
+	
+	
 		}
 	
-		
-		
-		echo "Entra";
-		$this->query('SELECT * FROM recurso WHILE :nombre = nombre');
-		$this->bind(':nombre',$post['nombre']);
-		$row = $this->single();
-		if((isset($_SESSION['cliente_data']['id']) === isset($_SESSION['suscripcion_data']['idcli']))===false || (isset($_SESSION['suscripcion_data']['tipoPlan']) != isset($_SESSION['recurso_data']['tipoPlan']))) 
-			{
-				
-				if(isset($_SESSION['recurso_data']['tipoPlan']) === 'Silver'  &&  isset($_SESSION['suscripcion_data']['tipoPlan']) === 'Free')
-				{
-					header('Location: '.ROOT_URL.'suscripciones');
-				}
-				elseif(isset($_SESSION['recurso_data']['tipoPlan']) == 'Gold'  &&  ((isset($_SESSION['suscripcion_data']['idcli']) == 'Free') || isset($_SESSION['suscripcion_data']['idcli']) == 'Silver'))
-				{
-					header('Location: '.ROOT_URL.'suscripciones');
-				}
-			}
-			
-			
-			
-			
-			
-			
-		 	$this->query('SELECT * FROM recurso WHERE NomRec = :nombre');
-		 	$this->bind(':nombre',$post['nombre']);
-			
-			 $row= $this->single();
-			
-
-			 /*
-			 $this->query('SELECT * FROM recurso WHERE NomRec = :nombre');
-			 $this->bind(':nombre',$post['nombre']);
-			 $row= $this->single();
-*/
-
-			
-			 if($row)
-			 {
-			// $_SESSION['is_logged_in'] = true;
-			 $_SESSION['recurso_data'] = array(
-				 "name" =>$row['NomRec'],
-				 "descript" => $row['Descrip'],
-				 "tipo" => $row['Tipo'], 
-				 "tipoPlan" => $row['TipoPlan'],
-			 	"ImgR" => $row['ImgR'],
-				 "enlace" =>$row['Enlace'],
-				 "idProv" => $row['IdProv']
-			 );
-			
-			
-			}
-			return;
-			
-			
-			 
-
-			 
-
-			}
-
-}
 	
 	public function UploadFile(){
 	
@@ -199,7 +244,7 @@ class  ArticuloModel extends Model{
 				"idProv" => $row['IdProv']
 			);
 				
-			header('Location: '.ROOT_URL.'shares');	
+			header('Location: '.ROOT_URL.'Articulos');	
 			//	
 			
 			//header('Location: '.ROOT_URL.'home');

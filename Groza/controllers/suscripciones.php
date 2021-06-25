@@ -16,6 +16,7 @@
         {
             header('Location: '.ROOT_URL.'suscripciones');
         }
+       // unset($_SESSION['suscripcion_data']);
 		$viewmodel = new SuscripcionModel();
 		$this->returnView($viewmodel->cancelarSuscripcion(),true);
 	    }

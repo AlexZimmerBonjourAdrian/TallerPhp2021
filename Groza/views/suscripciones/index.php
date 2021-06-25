@@ -1,5 +1,12 @@
-
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
 <div class="panel panel-default">
 <?php if(isset($_SESSION['is_logged_in'])) : ?>
     <?php if(isset($_SESSION['es_cliente'])) : ?>
@@ -15,7 +22,7 @@
     
 
 <div class="form-group">
-<?php if(((isset($_SESSION['cliente_data']['id']) === isset($_SESSION['suscription_data']['idcli']))===false)) : ?>
+<?php if(((isset($_SESSION['cliente_data']['id']) === isset($_SESSION['suscripcion_data']['idcli']))===false)) : ?>
     <label text-align="center" for="free" id="Free" name="Precio" value="0"></label>
     <li><a href="<?php echo ROOT_URL; ?>suscripciones/free">Subscribirse es gratis</a></li>
 
@@ -45,5 +52,10 @@
     <?php endif; ?>
     <?php endif; ?>
     
+
+    
 </div>
 </div>
+</body>
+</html>
+
