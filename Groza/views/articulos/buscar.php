@@ -1,10 +1,9 @@
 
-<?php if(isset($post['nombre']) === '' ) : ?>
-   
+
 <div>
 <div class="well mt-5">
 <p><?php echo $_SESSION['recurso_data']['name'] ?></p>
-<p><?php echo $_SESSION['recurso_data']['descript'] ?></p>
+<p><?php echo $_SESSION['recurso_data']['descript']?></p>
 <p><?php echo $_SESSION['recurso_data']['tipo'] ?></p>
 <p><?php echo $_SESSION['recurso_data']['tipoPlan'] ?></p>
 <br />
@@ -13,5 +12,5 @@
 
     </div>		
 
-<?php endif; ?>
+
 </div>

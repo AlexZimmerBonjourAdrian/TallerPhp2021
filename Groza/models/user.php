@@ -1,10 +1,11 @@
 <?php
-session_start();
+//session_start();
 
 
 
 class UserModel extends Model{
 
+    /*
 	public function register(){
         // Sanitize POST
 		$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
@@ -13,9 +14,17 @@ class UserModel extends Model{
 		}
 		
     }    
+    */
 
 
-
+	public function index(){
+        // Sanitize POST
+		$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+		if(isset($post['password'])){
+			$password = md5($post['password']);	
+		}
+		
+    }    
 
 
 	
@@ -251,11 +260,10 @@ public function login(){
 				"nick"	=> $row['NicknameProv'],
 				"fechaNac"	=> $row['FNProv'],
 				"imagen"	=> $row['ImgProv'],
-
 				"password"	=> $row['PassProv']
 				);
 			
-			header('Location: '.ROOT_URL.'shares');
+			header('Location: '.ROOT_URL.'articulos');
 
 		} 
 	 elseif($post['submit']){
@@ -280,7 +288,7 @@ public function login(){
 				"imagen"	=> $row['ImgCli']
 			);
 			
-			header('Location: '.ROOT_URL.'shares');
+			header('Location: '.ROOT_URL.'articulos');
 
 		} 
 	}else {

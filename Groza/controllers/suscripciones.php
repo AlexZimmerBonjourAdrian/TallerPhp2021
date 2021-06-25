@@ -1,39 +1,62 @@
 <?php
+	class Suscripciones extends Controller{
 
-class suscripciones extends Controller{
+        protected function index(){
+         
+            $viewmodel = new SuscripcionModel();
+            $this->returnView($viewmodel->index(), true);
+        }
 
-
-	protected function suscripcion()
-	{
-		$viewmodel = new SuscriptiesonModel();
-		$this->returnView($viewmodel->suscripcion(), true);
-	}
-
-
-    protected function cancelarSuscripcion()
-	{
-		$viewmodel = new SuscriptiesonModel();
+        protected function cancelarSuscripcion()
+    	{
+        if(!isset($_SESSION['is_logged_in'])){
+			header('Location: '.ROOT_URL.'suscripciones');
+		}
+        elseif(isset($_SESSION['es_proveedor']))
+        {
+            header('Location: '.ROOT_URL.'suscripciones');
+        }
+		$viewmodel = new SuscripcionModel();
 		$this->returnView($viewmodel->cancelarSuscripcion(),true);
-	}
+	    }
+        
+    protected function free(){
+    if(!isset($_SESSION['is_logged_in'])){
+        header('Location: '.ROOT_URL.'suscripciones');
+    }
+       elseif(isset($_SESSION['es_proveedor']))
+        {
+            header('Location: '.ROOT_URL.'suscripciones');
+        }
+    $viewmodel= new SuscripcionModel();
+    $this->returnView($viewmodel->free(),true);
+    }
 
-
-	protected function free()
-	{
-		$viewmodel = new SuscriptiesonModel();
-		$this->returnView($viewmodel->free(), true);
-	}
-
-	protected function silver()
-	{
-		$viewmodel = new  SuscriptiesonModel();
-		$this->returnView($viewmodel->silver(), true);
-
-	}
-	protected function gold()
-	{
-	
-		$viewmodel = new  SuscriptiesonModel();
-		$this->returnView($viewmodel->gold(),true);
-	}
+    protected function silver(){
+     if(!isset($_SESSION['is_logged_in'])){
+        header('Location: '.ROOT_URL.'suscripciones');
+    }
+       elseif(isset($_SESSION['es_proveedor']))
+        {
+            header('Location: '.ROOT_URL.'suscripciones');
+        }
+    $viewmodel= new SuscripcionModel();
+    $this->returnView($viewmodel->silver(),true);
+    }
+    protected function gold()
+    {
+        if(!isset($_SESSION['is_logged_in'])){
+        header('Location: '.ROOT_URL.'suscripciones');
+    }
+       elseif(isset($_SESSION['es_proveedor']))
+        {
+            header('Location: '.ROOT_URL.'suscripciones');
+        }
+    
+    $viewmodel= new SuscripcionModel();
+    $this->returnView($viewmodel->gold(),true);
+    }
+ 
 }
-
+?>
+ 
