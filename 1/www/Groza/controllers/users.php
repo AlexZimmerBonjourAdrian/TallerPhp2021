@@ -1,0 +1,41 @@
+<?php
+class Users extends Controller{
+
+
+	
+	protected function index(){
+		$viewmodel = new UserModel();
+		$this->returnView($viewmodel->index(), true);
+	}
+	
+/*
+	protected function register(){
+		$viewmodel = new UserModel();
+		$this->returnView($viewmodel->register(), true);
+	}
+	*/
+
+	protected function registerProveedor(){
+		$viewmodel = new UserModel();
+		$this->returnView($viewmodel->registerProveedor(),true);
+	}
+	
+	protected function registerCliente()
+	{
+		$viewmodel = new UserModel();
+		$this->returnView($viewmodel->registerCliente(),true);
+	}
+
+	protected function login(){
+		$viewmodel = new UserModel();
+		$this->returnView($viewmodel->login(), true);
+	}
+
+	protected function logout(){
+		unset($_SESSION['is_logged_in']);
+		session_destroy();
+		// Redirect
+		header('Location: '.ROOT_URL);
+	}
+
+}
